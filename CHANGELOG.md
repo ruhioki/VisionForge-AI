@@ -2,6 +2,16 @@
 
 Notable changes to VisionForge AI are documented here.
 
+## Unreleased
+
+### Added
+- Document scanning with four-corner page detection and perspective correction.
+- A synthetic document-scanner example requiring no external dataset.
+- A tested source ZIP generator that excludes repository history, caches, environments, and generated outputs.
+
+### Fixed
+- Align the package's `__version__` with the current 0.3.0 project metadata.
+
 ## 0.3.0 - 2026-10-22
 
 ### Added

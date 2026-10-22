@@ -21,3 +21,15 @@ visionforge metrics "outputs\\original.png" "outputs\\processed.png" --ssim --re
 ```
 
 Install the optional SSIM dependency first with `python -m pip install -e ".[quality]"`. See the main README for all commands and `docs/model-compatibility.md` before using an external ONNX model.
+
+## Perspective-correct a document
+
+```powershell
+python examples/document_scanner.py
+```
+
+This writes a synthetic page photograph and its perspective-corrected scan to `outputs\\document-scanner`. For real images, use `visionforge scan` as described in the main README.
+
+## Create a source ZIP
+
+From the repository root, run `python tools/create_source_bundle.py`. The clean archive is written to `dist\\VisionForge-AI-source.zip`; see the main README for exclusions and custom output paths.

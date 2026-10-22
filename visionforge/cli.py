@@ -17,6 +17,7 @@ from visionforge.filters import apply_filter
 from visionforge.histogram import save_histogram
 from visionforge.image_info import convert_grayscale, detect_edges, inspect_image, resize_image
 from visionforge.quality import calculate_image_metrics
+from visionforge.scan import scan_document
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -97,6 +98,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
+
+    scan = commands.add_parser("scan", help="detect a document and correct its perspective")
+    scan.add_argument("input", help="path to the photographed document")
+    scan.add_argument("-o", "--output", required=True, help="where to save the corrected page")
+    scan.add_argument("--min-area", type=float, default=0.15, help="minimum page area as a fraction of the image")
     return parser
 
 
@@ -156,6 +162,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(report, indent=2))
         elif args.command == "demo":
             report = run_demo(args.output_dir)
+            print(json.dumps(report, indent=2))
+        elif args.command == "scan":
+            report = scan_document(args.input, args.output, args.min_area)
             print(json.dumps(report, indent=2))
     except (OSError, ValueError, RuntimeError) as exc:
         print(f"error: {exc}", file=sys.stderr)

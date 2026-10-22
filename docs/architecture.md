@@ -13,8 +13,11 @@ VisionForge is organized as a small Python package with a CLI layer and reusable
 - `visionforge/filters.py`: blur, sharpen, and binary threshold filters.
 - `visionforge/comparison.py`: creates labeled side-by-side image comparisons.
 - `visionforge/contours.py`: detects contours and reports geometric measurements.
+- `visionforge/scan.py`: locates a four-corner page and corrects its perspective.
 - `visionforge/demo.py`: generates synthetic inputs and reproducible example outputs.
 - `examples/generate_demo.py`: creates a deterministic synthetic image and runs the processing pipeline.
+- `examples/document_scanner.py`: generates a photographed-page example and runs the document scanner.
+- `tools/create_source_bundle.py`: packages project sources and documentation into a clean downloadable ZIP.
 - `tests/`: regression tests built around synthetic images, avoiding external datasets.
 
 ## Design decisions
@@ -24,5 +27,7 @@ OpenCV uses BGR channel ordering for loaded color images, so code explicitly con
 ## Data flow
 
 Input image -> validated loader -> processing / analysis function -> output image or JSON metadata
+
+For document scanning, a resized working copy is used to locate the largest qualifying four-corner contour. Its coordinates are mapped to the original image before perspective correction, so saved output retains source resolution.
 
 The CLI is a thin interface over these functions so they can also be reused by notebooks or a future graphical interface.

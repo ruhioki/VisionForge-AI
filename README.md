@@ -108,6 +108,14 @@ Generate a color histogram:
 visionforge histogram "path\\to\\your-image.jpg" -o "outputs\\histogram.png"
 ```
 
+Compare an original image with a processed result in one labeled image:
+
+```powershell
+visionforge compare "path\\to\\original.jpg" "path\\to\\processed.png" -o "outputs\\comparison.png" --left-label Original --right-label Edges
+```
+
+The comparison tool preserves each image's aspect ratio, fits both into a shared-height canvas, and adds readable labels. It is useful for reviewing filters and edge-detection results side by side.
+
 Run the complete reproducible demo without downloading a dataset:
 
 ```powershell
@@ -179,6 +187,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Add RGB histogram rendering
 - [x] Add a CLI demo with generated sample outputs and a JSON report
 - [x] Add a reproducible demo that generates its own test image and outputs
+- [x] Create labeled side-by-side comparison images for processing results
 - [ ] Add side-by-side visual comparison reports
 - [ ] Add contour detection with configurable retrieval modes
 - [ ] Explore pretrained classification models in a separate optional module

@@ -18,6 +18,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 
 - Inspect an image's dimensions, channels, file format, and file size.
 - Detect edges using a Gaussian blur and the Canny algorithm.
+- Analyze average RGB channel values and grayscale brightness statistics.
 - Convert images to grayscale.
 - Resize images to specified dimensions.
 - Save results to a chosen output path, creating parent folders when needed.
@@ -59,6 +60,12 @@ Run Canny edge detection and save the result:
 
 ```powershell
 visionforge edges "path\\to\\your-image.jpg" --output "outputs\\sample-edges.png"
+```
+
+Analyze average colors and brightness:
+
+```powershell
+visionforge colors "path\\to\\your-image.jpg"
 ```
 
 Adjust the Canny thresholds if needed:
@@ -105,9 +112,13 @@ VisionForge-AI/
 ├── visionforge/
 │   ├── __init__.py
 │   ├── image_info.py
+│   ├── color_analysis.py
 │   └── cli.py
 ├── tests/
 │   └── test_image_info.py
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── pyproject.toml
 ├── requirements.txt
 ├── LICENSE
@@ -131,7 +142,8 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Grayscale conversion and image resizing
 - [x] Command-line interface
 - [x] Automated tests for core operations and invalid inputs
-- [ ] Add histogram and color-distribution analysis
+- [x] Add basic RGB color and brightness analysis
+- [ ] Add histogram visualizations
 - [ ] Add side-by-side visual comparison reports
 - [ ] Explore pretrained classification models in a separate optional module
 - [ ] Add sample images with clear reuse licenses

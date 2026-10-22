@@ -2,6 +2,17 @@
 
 Notable changes to VisionForge AI are documented here.
 
+## Unreleased
+
+### Added
+- `visionforge --version` flag.
+- Tests for filters, color analysis, histograms, the demo pipeline, and the CLI (47 -> 69 tests).
+- Ruff linting, run locally and in CI.
+
+### Fixed
+- `visionforge.__version__` reported `0.2.0` while the package metadata said `0.3.0`; a test now keeps them in sync.
+- Missing closing parenthesis in the `batch --report` help text.
+
 ## 0.3.0 - 2026-10-22
 
 ### Added

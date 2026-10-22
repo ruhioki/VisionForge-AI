@@ -190,7 +190,10 @@ The demo creates a synthetic image, processes it, and writes edge, grayscale, re
 
 ```powershell
 python -m pytest
+python -m ruff check .
 ```
+
+Check the installed version with `visionforge --version`.
 
 The test suite creates temporary sample images automatically, so you do not need to download any dataset to test the core functionality.
 
@@ -221,6 +224,12 @@ VisionForge-AI/
 │   ├── architecture.md
 │   └── roadmap.md
 ├── tests/
+│   ├── conftest.py
+│   ├── test_cli.py
+│   ├── test_color_analysis.py
+│   ├── test_demo.py
+│   ├── test_filters.py
+│   ├── test_histogram.py
 │   ├── test_image_info.py
 │   ├── test_comparison.py
 │   ├── test_contours.py
@@ -288,7 +297,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for development setup, test commands, d
 
 ## Security and maintenance
 
-GitHub Actions runs the test suite and package-build smoke test. CodeQL performs scheduled Python security analysis, and Dependabot checks Python dependencies and GitHub Actions versions weekly. Review automated update PRs before merging them.
+GitHub Actions runs Ruff linting, the test suite, and a package-build smoke test. CodeQL performs scheduled Python security analysis, and Dependabot checks Python dependencies and GitHub Actions versions weekly. Review automated update PRs before merging them.
 
 ## About
 

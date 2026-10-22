@@ -24,6 +24,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Apply blur, sharpening, and binary threshold filters.
 - Generate an RGB channel histogram image.
 - Detect and measure contours with configurable thresholding, retrieval mode, and minimum area.
+- Batch-process supported image files in a folder and create a JSON success/failure report.
 - Run an end-to-end demo that writes sample outputs and a JSON report.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
@@ -125,6 +126,14 @@ visionforge compare "path\\to\\original.jpg" "path\\to\\processed.png" -o "outpu
 
 The comparison tool preserves each image's aspect ratio, fits both into a shared-height canvas, and adds readable labels. It is useful for reviewing filters and edge-detection results side by side.
 
+Process every supported image in a folder and write a JSON summary:
+
+```powershell
+visionforge batch "images" --output-dir "outputs\\batch" --kind edges
+```
+
+Supported batch operations are `blur`, `sharpen`, `threshold`, `grayscale`, and `edges`. Each output is saved as PNG; failures are recorded per file so one bad image does not stop the rest of the batch.
+
 Run the complete reproducible demo without downloading a dataset:
 
 ```powershell
@@ -158,6 +167,7 @@ VisionForge-AI/
 │   ├── demo.py
 │   ├── comparison.py
 │   ├── contours.py
+│   ├── batch.py
 │   └── cli.py
 ├── examples/
 │   ├── README.md
@@ -202,6 +212,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Add a reproducible demo that generates its own test image and outputs
 - [x] Create labeled side-by-side comparison images for processing results
 - [x] Add contour detection with configurable retrieval modes and JSON reports
+- [x] Add folder-based batch processing with per-file error reporting
 - [ ] Explore pretrained classification models in a separate optional module
 - [ ] Add sample images with clear reuse licenses
 

@@ -10,6 +10,7 @@
 - [x] RGB histogram rendering
 - [x] Reproducible synthetic demo and JSON report
 - [x] Automated tests and CI workflow
+- [x] Folder-based batch processing with per-file error reporting
 
 ## Next
 

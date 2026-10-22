@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+from pathlib import Path
 from collections.abc import Sequence
 
 from visionforge.color_analysis import analyze_colors
@@ -92,7 +93,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "contours":
             report = detect_contours(args.input, args.output, args.threshold, args.retrieval, args.min_area)
             if args.report:
-                report_path = __import__("pathlib").Path(args.report).expanduser()
+                report_path = Path(args.report).expanduser()
                 report_path.parent.mkdir(parents=True, exist_ok=True)
                 report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
                 report["report_path"] = str(report_path)

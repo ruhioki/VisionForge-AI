@@ -65,10 +65,10 @@ python -m pip install -e ".[onnx]"
 Provide an ONNX image-classification model and a text file containing one label per line in the exact class order expected by that model:
 
 ```powershell
-visionforge classify "path\\to\\image.jpg" --model "models\\classifier.onnx" --labels "models\\labels.txt" --top-k 5
+visionforge classify "path\\to\\image.jpg" --model "models\\classifier.onnx" --labels "models\\labels.txt" --top-k 5 --provider auto
 ```
 
-The classifier expects a float32 NCHW model with three RGB channels and ImageNet mean/std normalization. Fixed model input dimensions are detected automatically; dynamic spatial dimensions default to 224 × 224. This is intended for compatible ImageNet-style classifiers, not arbitrary ONNX models. VisionForge does not download or bundle model weights. Check the model and label source licenses and confirm that the labels match the model before use. The inference command currently uses the CPU execution provider.
+The classifier expects a float32 NCHW model with three RGB channels and ImageNet mean/std normalization. Fixed model input dimensions are detected automatically; dynamic spatial dimensions default to 224 × 224. This is intended for compatible ImageNet-style classifiers, not arbitrary ONNX models. VisionForge does not download or bundle model weights. Check the model and label source licenses and confirm that the labels match the model before use. The `--provider` option accepts `auto`, `cpu`, or `cuda`. `auto` prefers CUDA when ONNX Runtime reports a compatible CUDA provider, otherwise it uses CPU. To try GPU inference, install a compatible `onnxruntime-gpu` build instead of the CPU `onnxruntime` package and ensure its CUDA/cuDNN requirements match your system. CUDA support depends on the installed runtime and drivers; the command reports the provider it actually selected.
 
 ## Run it
 

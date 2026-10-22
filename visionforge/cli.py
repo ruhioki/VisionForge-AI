@@ -7,6 +7,7 @@ from pathlib import Path
 from collections.abc import Sequence
 
 from visionforge.batch import batch_process
+from visionforge.benchmark import benchmark_image
 from visionforge.classification import classify_image
 from visionforge.color_analysis import analyze_colors
 from visionforge.comparison import create_comparison
@@ -79,6 +80,13 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--kind", choices=("blur", "sharpen", "threshold", "grayscale", "edges"), required=True, help="operation to apply to every image")
     batch.add_argument("--report", help="JSON report path (default: <output-dir>/batch-report.json")
 
+    benchmark = commands.add_parser("benchmark", help="measure an image operation in memory")
+    benchmark.add_argument("input", help="path to the source image")
+    benchmark.add_argument("--kind", choices=("grayscale", "edges", "blur", "sharpen", "threshold"), required=True)
+    benchmark.add_argument("--iterations", type=int, default=25, help="timed iterations (default: 25)")
+    benchmark.add_argument("--warmup", type=int, default=3, help="warm-up iterations (default: 3)")
+    benchmark.add_argument("--report", help="optional JSON report path")
+
     classify = commands.add_parser("classify", help="classify an image with a user-supplied ONNX model")
     classify.add_argument("input", help="path to the source image")
     classify.add_argument("--model", required=True, help="path to a compatible ONNX classification model")
@@ -133,6 +141,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             report_path.parent.mkdir(parents=True, exist_ok=True)
             report["report_path"] = str(report_path)
             report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+            print(json.dumps(report, indent=2))
+        elif args.command == "benchmark":
+            report = benchmark_image(args.input, args.kind, args.iterations, args.warmup)
+            if args.report:
+                report_path = Path(args.report).expanduser()
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                report["report_path"] = str(report_path)
+                report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report, indent=2))
         elif args.command == "classify":
             report = classify_image(args.input, args.model, args.labels, args.top_k, args.provider)

@@ -233,8 +233,10 @@ VisionForge-AI/
 │   │   ├── bug_report.md
 │   │   └── feature_request.md
 │   ├── workflows/
-│   │   └── tests.yml
-│   └── PULL_REQUEST_TEMPLATE.md
+│   │   ├── tests.yml
+│   │   └── codeql.yml
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── dependabot.yml
 ├── pyproject.toml
 ├── requirements.txt
 ├── CONTRIBUTING.md

@@ -157,7 +157,7 @@ Process every supported image in a folder and write a JSON summary:
 visionforge batch "images" --output-dir "outputs\\batch" --kind edges
 ```
 
-Supported batch operations are `blur`, `sharpen`, `threshold`, `grayscale`, and `edges`. Each output is saved as PNG; failures are recorded per file so one bad image does not stop the rest of the batch.
+Supported batch operations are `blur`, `sharpen`, `threshold`, `grayscale`, and `edges`. Each output is saved as PNG; failures are recorded per file so one bad image does not stop the rest of the batch. A `batch-report.json` file is written inside the output folder by default. Use `--report "path\\to\\report.json"` to choose a different report path.
 
 Run the complete reproducible demo without downloading a dataset:
 

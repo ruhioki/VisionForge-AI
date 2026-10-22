@@ -204,10 +204,13 @@ VisionForge-AI/
 │   ├── color_analysis.py
 │   ├── histogram.py
 │   ├── filters.py
-│   ├── demo.py
 │   ├── comparison.py
 │   ├── contours.py
 │   ├── batch.py
+│   ├── quality.py
+│   ├── classification.py
+│   ├── benchmark.py
+│   ├── demo.py
 │   └── cli.py
 ├── examples/
 │   ├── README.md
@@ -218,12 +221,22 @@ VisionForge-AI/
 ├── tests/
 │   ├── test_image_info.py
 │   ├── test_comparison.py
-│   └── test_contours.py
+│   ├── test_contours.py
+│   ├── test_batch.py
+│   ├── test_quality.py
+│   ├── test_classification.py
+│   └── test_benchmark.py
 ├── .github/
-│   └── workflows/
-│       └── tests.yml
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md
+│   │   └── feature_request.md
+│   ├── workflows/
+│   │   └── tests.yml
+│   └── PULL_REQUEST_TEMPLATE.md
 ├── pyproject.toml
 ├── requirements.txt
+├── CONTRIBUTING.md
+├── CHANGELOG.md
 ├── LICENSE
 └── README.md
 ```

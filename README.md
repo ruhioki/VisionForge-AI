@@ -1,115 +1,102 @@
 <p align="center">
-  <img src="assets/visionforge-banner.svg" width="100%" alt="VisionForge AI animated purple and white banner"/>
+  <img src="assets/visionforge-banner.svg" width="100%" alt="VisionForge AI banner"/>
 </p>
 
-<p align="center">
-  <strong>Explore the pixels. Understand the patterns. Build the intelligence.</strong>
-</p>
+<p align="center"><strong>Explore the pixels. Understand the patterns. Build the intelligence.</strong></p>
 
-<p align="center">
-  A Python computer vision project exploring image processing, visual analysis, and AI-powered recognition.
-</p>
+<p align="center">A practical Python computer-vision toolkit built with OpenCV.</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-  <img src="https://img.shields.io/badge/Computer_Vision-8B5CF6?style=for-the-badge" alt="Computer Vision"/>
-  <img src="https://img.shields.io/badge/AI-Exploration-A855F7?style=for-the-badge" alt="AI"/>
-  <img src="https://img.shields.io/badge/Status-Starter_Project-C084FC?style=for-the-badge" alt="Starter project"/>
+  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV"/>
+  <img src="https://img.shields.io/badge/Tests-pytest-0A9EDC?style=for-the-badge" alt="pytest"/>
 </p>
 
----
+## What it does
 
-## The Vision
+VisionForge AI is a learning-focused computer-vision project. Its first working OpenCV toolkit can:
 
-How can software turn the pixels in an image into useful information?
+- Inspect an image's dimensions, channels, file format, and file size.
+- Detect edges using a Gaussian blur and the Canny algorithm.
+- Convert images to grayscale.
+- Resize images to specified dimensions.
+- Save results to a chosen output path, creating parent folders when needed.
+- Validate parameters and show readable errors for files that cannot be opened.
 
-**VisionForge AI is my journey into Python, computer vision, and practical AI experimentation.**
+This release uses classical image processing. It does not claim to provide trained image classification or object-detection models yet.
 
-I'm building this project to strengthen my Python skills and explore how computers process visual information, from basic image transformations to machine-learning-powered recognition.
-
-The goal is to understand the techniques behind the results, test ideas with real inputs, and document what works instead of treating AI as a black box.
-
-## Current Starter
-
-The starter version includes a small Python command-line tool that opens an image and reports its dimensions, color mode, and format. It provides a simple foundation for adding image-processing experiments.
-
-The project does not claim to include trained AI models or object detection yet. Those are future milestones.
-
-## Planned Features
-
-| Feature | Purpose |
-|---|---|
-| Image inspection | Read image dimensions, format, and color mode |
-| Image resizing | Prepare images for downstream processing |
-| Color analysis | Explore image colors and basic statistics |
-| Edge detection | Identify prominent boundaries in images |
-| Image filtering | Experiment with smoothing and transformations |
-| Image classification | Explore predictions from a pretrained model |
-| Object detection | Investigate locating objects within images |
-| Visual reports | Present outputs and experiment results clearly |
-
-Features will be marked complete only after they are implemented and tested.
-
-## Technology Stack
-
-- **Python** for application logic.
-- **Pillow** for initial image loading and inspection.
-- **OpenCV** for planned computer vision experiments.
-- **NumPy** for planned numerical operations.
-- **PyTorch** for possible machine-learning experiments.
-- **Matplotlib** for planned visualizations.
-- **pytest** for tests.
-
-Dependencies will be added when the project needs them.
-
-## Quick Start
-
-### Requirements
+## Requirements
 
 - Python 3.10 or newer
-- `pip`
+- pip
 
-### Install
+## Install on Windows 11
 
-```bash
-python -m venv .venv
-```
-
-Windows PowerShell:
+Open PowerShell in the repository folder:
 
 ```powershell
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
 ```
 
-macOS or Linux:
+If PowerShell blocks environment activation, you can run the environment's Python directly instead:
 
-```bash
-source .venv/bin/activate
-python -m pip install -r requirements.txt
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
 
-### Inspect an image
+## Run it
 
-```bash
-python -m visionforge.cli path/to/image.png
+Show image metadata:
+
+```powershell
+visionforge info "path\\to\\your-image.png"
 ```
 
-Replace `path/to/image.png` with the path to an image file on your computer.
+Run Canny edge detection and save the result:
 
-## Roadmap
+```powershell
+visionforge edges "path\\to\\your-image.jpg" --output "outputs\\sample-edges.png"
+```
 
-- [x] Create the initial Python package and CLI image-inspection feature.
-- [x] Add basic input validation and an example test.
-- [ ] Add image resizing.
-- [ ] Explore color analysis.
-- [ ] Add edge detection with OpenCV.
-- [ ] Save example outputs for documentation.
-- [ ] Explore a pretrained image-classification model.
-- [ ] Evaluate predictions with suitable examples.
-- [ ] Investigate object detection as a later extension.
+Adjust the Canny thresholds if needed:
 
-## Project Structure
+```powershell
+visionforge edges "path\\to\\your-image.jpg" -o "outputs\\edges.png" --low 60 --high 160
+```
+
+Convert to grayscale:
+
+```powershell
+visionforge grayscale "path\\to\\your-image.jpg" -o "outputs\\sample-gray.png"
+```
+
+Resize an image:
+
+```powershell
+visionforge resize "path\\to\\your-image.jpg" -o "outputs\\sample-small.png" --width 640 --height 480
+```
+
+You can also run the CLI as a Python module:
+
+```powershell
+python -m visionforge.cli --help
+python -m visionforge.cli info "C:\\path\\to\\your-image.png"
+```
+
+Use your own image path for these examples. The project does not currently bundle sample photos.
+
+## Run tests
+
+```powershell
+python -m pytest
+```
+
+The test suite creates temporary sample images automatically, so you do not need to download any dataset to test the core functionality.
+
+## Project structure
 
 ```text
 VisionForge-AI/
@@ -121,40 +108,44 @@ VisionForge-AI/
 │   └── cli.py
 ├── tests/
 │   └── test_image_info.py
-├── examples/
-├── docs/
+├── pyproject.toml
 ├── requirements.txt
-├── .gitignore
 ├── LICENSE
 └── README.md
 ```
 
-## Learning Through Experiments
+## How Canny edge detection works here
 
-For each significant experiment, I aim to record the problem, technique, input data, observed results, limitations, and lessons learned.
+1. Load the source image with OpenCV.
+2. Convert the image to grayscale.
+3. Apply a small Gaussian blur to reduce noise.
+4. Run Canny edge detection using configurable lower and upper thresholds.
+5. Save the resulting single-channel edge map.
 
-That process will help me understand not only when a method works, but also where it can fail and how it might be improved.
+Results depend on image content, noise, lighting, and threshold choices. Edge detection highlights intensity boundaries; it does not identify objects by itself.
 
-## Development Principles
+## Roadmap
 
-- Keep code readable and modular.
-- Validate user inputs and handle errors clearly.
-- Prefer reproducible experiments.
-- Test behavior with suitable examples.
-- Document model limitations and avoid overstating accuracy.
-- Respect dataset, model, and library licenses.
+- [x] OpenCV image loading and metadata inspection
+- [x] Canny edge detection with configurable thresholds
+- [x] Grayscale conversion and image resizing
+- [x] Command-line interface
+- [x] Automated tests for core operations and invalid inputs
+- [ ] Add histogram and color-distribution analysis
+- [ ] Add side-by-side visual comparison reports
+- [ ] Explore pretrained classification models in a separate optional module
+- [ ] Add sample images with clear reuse licenses
 
-## About Me
+## Development principles
+
+- Keep functions small and readable.
+- Validate input and fail with useful error messages.
+- Test using reproducible synthetic images.
+- Separate classical image processing from future model-based features.
+- Document limitations and respect dataset and model licenses.
+
+## About
 
 **Mohamed | [@ruhioki](https://github.com/ruhioki)**
 
-I'm an Artificial Intelligence and Data Science student interested in AI engineering, GPU technology, performance optimization, and software development.
-
-VisionForge AI is one step in my journey toward building and explaining practical intelligent systems.
-
----
-
-<p align="center">
-  <strong>VisionForge AI</strong><br/>
-  <sub>Explore the pixels. Understand the patterns. Build the intelligence.</sub>
-</p>
+I'm an Artificial Intelligence and Data Science student interested in AI engineering, GPU technology, performance optimization, and software development. VisionForge AI is a hands-on project for learning computer vision by building and testing real tools.

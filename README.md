@@ -12,7 +12,11 @@
   <img src="https://img.shields.io/badge/Tests-pytest-0A9EDC?style=for-the-badge" alt="pytest"/>
 </p>
 
-## Release status\n\nThe project is preparing version **0.3.0**. See [`CHANGELOG.md`](CHANGELOG.md) for the feature summary and [`docs/roadmap.md`](docs/roadmap.md) for what remains.\n\n## What it does
+## Release status
+
+The project is preparing version **0.3.0**. See [`CHANGELOG.md`](CHANGELOG.md) for the feature summary and [`docs/roadmap.md`](docs/roadmap.md) for what remains.
+
+## What it does
 
 VisionForge AI is a learning-focused computer-vision project. Its first working OpenCV toolkit can:
 
@@ -55,7 +59,17 @@ If PowerShell blocks environment activation, you can run the environment's Pytho
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
 
-## Benchmark image operations\n\nMeasure in-memory CPU performance without including image loading or file-writing time:\n\n```powershell\nvisionforge benchmark "path\\to\\image.jpg" --kind edges --iterations 50 --warmup 5 --report "outputs\\benchmark.json"\n```\n\nSupported operations are `grayscale`, `edges`, `blur`, `sharpen`, and `threshold`. Results include mean, median, minimum, and maximum latency plus approximate megapixels per second. These are local micro-benchmarks, not a comparison between different computers or a GPU benchmark.\n\n## Optional AI image classification
+## Benchmark image operations
+
+Measure in-memory CPU performance without including image loading or file-writing time:
+
+```powershell
+visionforge benchmark "path\\to\\image.jpg" --kind edges --iterations 50 --warmup 5 --report "outputs\\benchmark.json"
+```
+
+Supported operations are `grayscale`, `edges`, `blur`, `sharpen`, and `threshold`. Results include mean, median, minimum, and maximum latency plus approximate megapixels per second. These are local micro-benchmarks, not a comparison between different computers or a GPU benchmark.
+
+## Optional AI image classification
 
 Install the optional ONNX Runtime dependency:
 
@@ -239,7 +253,8 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Create labeled side-by-side comparison images for processing results
 - [x] Add contour detection with configurable retrieval modes and JSON reports
 - [x] Add folder-based batch processing with per-file error reporting
-- [x] Add optional ONNX inference for compatible user-supplied image-classification models\n- [x] Add repeatable in-memory CPU benchmarks for core image operations
+- [x] Add optional ONNX inference for compatible user-supplied image-classification models
+- [x] Add repeatable in-memory CPU benchmarks for core image operations
 - [ ] Add sample images with clear reuse licenses
 
 ## Development principles

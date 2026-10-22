@@ -3,6 +3,9 @@
 VisionForge is organized as a small Python package with a CLI layer and reusable processing functions.
 
 - `visionforge/cli.py`: parses commands and reports results or user-friendly errors.
+- `visionforge/classification.py`: optional ONNX Runtime inference for compatible ImageNet-style classifiers.
+- `visionforge/quality.py`: computes pixel-level MSE, RMSE, and PSNR for same-sized images.
+- `visionforge/batch.py`: processes folders of images and records per-file outcomes.
 - `visionforge/image_info.py`: image loading, metadata, grayscale, resizing, and Canny edge detection.
 - `visionforge/color_analysis.py`: average RGB values and grayscale brightness statistics.
 - `visionforge/histogram.py`: draws RGB channel histograms with OpenCV.

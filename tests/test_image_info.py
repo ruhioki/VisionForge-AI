@@ -64,3 +64,20 @@ def test_resize_uses_requested_dimensions(sample_image, tmp_path):
 def test_resize_rejects_non_positive_dimensions(sample_image, tmp_path):
     with pytest.raises(ValueError, match="positive"):
         resize_image(sample_image, tmp_path / "bad.png", width=0, height=20)
+
+
+def test_color_analysis_reports_rgb_and_brightness(sample_image):
+    from visionforge.color_analysis import analyze_colors
+
+    result = analyze_colors(sample_image)
+    assert set(result["mean_rgb"]) == {"red", "green", "blue"}
+    assert result["brightness"]["minimum"] == 0
+    assert result["brightness"]["maximum"] == 255
+
+
+def test_cli_help_lists_commands():
+    from visionforge.cli import build_parser
+
+    help_text = build_parser().format_help()
+    assert "colors" in help_text
+    assert "edges" in help_text

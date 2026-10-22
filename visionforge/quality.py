@@ -1,5 +1,6 @@
 """Image similarity metrics for comparing a reference and candidate image."""
 
+import importlib
 from pathlib import Path
 from typing import Any
 
@@ -7,7 +8,11 @@ import cv2
 import numpy as np
 
 
-def calculate_image_metrics(reference_path: str | Path, candidate_path: str | Path) -> dict[str, Any]:
+def calculate_image_metrics(
+    reference_path: str | Path,
+    candidate_path: str | Path,
+    include_ssim: bool = False,
+) -> dict[str, Any]:
     """Calculate MSE, RMSE, and PSNR for two same-sized images.
 
     Images are compared as decoded by OpenCV. The function rejects unreadable
@@ -34,7 +39,7 @@ def calculate_image_metrics(reference_path: str | Path, candidate_path: str | Pa
     rmse = float(np.sqrt(mse))
     psnr = None if mse == 0 else float(20.0 * np.log10(255.0 / np.sqrt(mse)))
 
-    return {
+    result = {
         "reference": str(reference_file),
         "candidate": str(candidate_file),
         "width": int(reference.shape[1]),
@@ -51,3 +56,20 @@ def calculate_image_metrics(reference_path: str | Path, candidate_path: str | Pa
             else "Higher PSNR and lower MSE indicate closer pixel-level similarity."
         ),
     }
+    if include_ssim:
+        if min(reference.shape[0], reference.shape[1]) < 3:
+            raise ValueError("SSIM requires images with width and height of at least 3 pixels")
+        try:
+            metrics = importlib.import_module("skimage.metrics")
+        except ImportError as exc:
+            raise RuntimeError(
+                "SSIM is optional. Install it with: python -m pip install -e \".[quality]\""
+            ) from exc
+        shortest_side = min(reference.shape[0], reference.shape[1])
+        window_size = min(7, shortest_side if shortest_side % 2 else shortest_side - 1)
+        result["ssim"] = float(
+            metrics.structural_similarity(
+                reference, candidate, channel_axis=-1, data_range=255, win_size=window_size
+            )
+        )
+    return result

@@ -161,10 +161,10 @@ The comparison tool preserves each image's aspect ratio, fits both into a shared
 Compare a reference image with a processed candidate using pixel-level quality metrics:
 
 ```powershell
-visionforge metrics "outputs\\original.png" "outputs\\processed.png" --report "outputs\\metrics.json"
+visionforge metrics "outputs\\original.png" "outputs\\processed.png" --report "outputs\\metrics.json" --ssim
 ```
 
-MSE and RMSE measure average pixel error; lower values mean closer pixel values. PSNR is reported in decibels, with higher values indicating closer similarity. Identical decoded images produce infinite PSNR. Images must have the same dimensions; this is a pixel-level metric, not a perceptual quality score.
+MSE and RMSE measure average pixel error; lower values mean closer pixel values. PSNR is reported in decibels, with higher values indicating closer similarity. Identical decoded images produce infinite PSNR. Images must have the same dimensions; MSE, RMSE, and PSNR are pixel-level metrics, not perceptual quality scores. To include structural similarity (SSIM), install `python -m pip install -e ".[quality]"` and add `--ssim`. SSIM is optional and compares local structure as well as pixel values.
 
 Process every supported image in a folder and write a JSON summary:
 

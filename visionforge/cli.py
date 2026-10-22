@@ -65,6 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     metrics.add_argument("reference", help="path to the reference image")
     metrics.add_argument("candidate", help="path to the image being evaluated")
     metrics.add_argument("--report", help="optional JSON report path")
+    metrics.add_argument("--ssim", action="store_true", help="include optional structural similarity (SSIM)")
 
     contours = commands.add_parser("contours", help="detect and measure image contours")
     contours.add_argument("input", help="path to the source image")
@@ -120,7 +121,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = create_comparison(args.original, args.processed, args.output, args.left_label, args.right_label)
             print(f"Saved comparison: {result}")
         elif args.command == "metrics":
-            report = calculate_image_metrics(args.reference, args.candidate)
+            report = calculate_image_metrics(args.reference, args.candidate, include_ssim=args.ssim)
             if args.report:
                 report_path = Path(args.report).expanduser()
                 report_path.parent.mkdir(parents=True, exist_ok=True)

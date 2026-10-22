@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 import pytest
@@ -69,5 +71,3 @@ def test_cli_help_lists_batch_command():
 
     assert "batch" in build_parser().format_help()
 
-
-from pathlib import Path

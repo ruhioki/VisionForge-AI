@@ -71,3 +71,29 @@ def test_cli_help_lists_batch_command():
 
     assert "batch" in build_parser().format_help()
 
+
+def test_batch_cli_writes_json_report(tmp_path, monkeypatch, capsys):
+    import json
+    import visionforge.cli as cli
+
+    source = tmp_path / "images"
+    source.mkdir()
+    output = tmp_path / "outputs"
+    fake_report = {
+        "input_directory": str(source),
+        "output_directory": str(output),
+        "operation": "edges",
+        "discovered": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "results": [],
+        "errors": [],
+    }
+    monkeypatch.setattr(cli, "batch_process", lambda *args: dict(fake_report))
+
+    assert cli.main(["batch", str(source), "--output-dir", str(output), "--kind", "edges"]) == 0
+    report_path = output / "batch-report.json"
+    saved = json.loads(report_path.read_text(encoding="utf-8"))
+    assert saved["succeeded"] == 1
+    assert saved["report_path"] == str(report_path)
+    assert json.loads(capsys.readouterr().out)["report_path"] == str(report_path)

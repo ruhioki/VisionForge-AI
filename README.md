@@ -1,5 +1,3 @@
-# VisionForge AI
-
 <p align="center">
   <img src="assets/visionforge-banner.svg" width="100%" alt="VisionForge AI animated purple and white banner"/>
 </p>

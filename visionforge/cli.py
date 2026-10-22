@@ -84,6 +84,7 @@ def build_parser() -> argparse.ArgumentParser:
     classify.add_argument("--model", required=True, help="path to a compatible ONNX classification model")
     classify.add_argument("--labels", required=True, help="text file with one class label per line")
     classify.add_argument("--top-k", type=int, default=5, help="number of predictions to show (default: 5)")
+    classify.add_argument("--provider", choices=("auto", "cpu", "cuda"), default="auto", help="inference provider (default: auto)")
 
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
@@ -134,7 +135,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report, indent=2))
         elif args.command == "classify":
-            report = classify_image(args.input, args.model, args.labels, args.top_k)
+            report = classify_image(args.input, args.model, args.labels, args.top_k, args.provider)
             print(json.dumps(report, indent=2))
         elif args.command == "demo":
             report = run_demo(args.output_dir)

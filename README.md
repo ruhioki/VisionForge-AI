@@ -257,6 +257,10 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Add repeatable in-memory CPU benchmarks for core image operations
 - [ ] Add sample images with clear reuse licenses
 
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for development setup, test commands, design guidelines, and pull request expectations. Bug reports and feature ideas can use the templates in GitHub Issues.
+
 ## Development principles
 
 - Keep functions small and readable.

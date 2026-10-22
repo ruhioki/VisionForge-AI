@@ -93,7 +93,13 @@ python -m visionforge.cli --help
 python -m visionforge.cli info "C:\\path\\to\\your-image.png"
 ```
 
-Use your own image path for these examples. The project does not currently bundle sample photos.
+Use your own image path for these commands. To create a reproducible demo image and generate all the outputs without downloading a dataset, run:
+
+```powershell
+python examples/generate_demo.py
+```
+
+The script creates a synthetic image and writes the original, edge map, grayscale image, and resized image to `outputs\` (which is ignored by Git).
 
 ## Run tests
 
@@ -114,6 +120,8 @@ VisionForge-AI/
 │   ├── image_info.py
 │   ├── color_analysis.py
 │   └── cli.py
+├── examples/
+│   └── generate_demo.py
 ├── tests/
 │   └── test_image_info.py
 ├── .github/
@@ -143,6 +151,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Command-line interface
 - [x] Automated tests for core operations and invalid inputs
 - [x] Add basic RGB color and brightness analysis
+- [x] Add a reproducible demo that generates its own test image and outputs
 - [ ] Add histogram visualizations
 - [ ] Add side-by-side visual comparison reports
 - [ ] Explore pretrained classification models in a separate optional module

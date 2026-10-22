@@ -1,0 +1,140 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#080611"/>
+      <stop offset=".55" stop-color="#171027"/>
+      <stop offset="1" stop-color="#090713"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F0E7FF"/>
+      <stop offset=".5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#A78BFA" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#E9D5FF" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" stroke="#A78BFA" stroke-opacity=".09"/>
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="frame"><rect width="1200" height="360" rx="20"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="360" rx="20" fill="url(#bg)"/>
+    <rect width="1200" height="360" fill="url(#grid)"/>
+
+    <ellipse cx="970" cy="170" rx="300" ry="210" fill="#7C3AED" opacity=".13"/>
+    <ellipse cx="180" cy="360" rx="270" ry="130" fill="#8B5CF6" opacity=".08"/>
+
+    <!-- Animated background scanner -->
+    <rect x="0" y="60" width="1200" height="2" fill="url(#beam)">
+      <animate attributeName="y" values="60;315;60" dur="8s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Floating particles -->
+    <g fill="#DDD0FF">
+      <circle cx="65" cy="100" r="2"><animate attributeName="opacity" values=".15;1;.15" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="310" cy="55" r="2"><animate attributeName="opacity" values="1;.2;1" dur="4s" repeatCount="indefinite"/></circle>
+      <circle cx="440" cy="300" r="2"><animate attributeName="opacity" values=".2;1;.2" dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="700" cy="75" r="2"><animate attributeName="opacity" values="1;.2;1" dur="3.4s" repeatCount="indefinite"/></circle>
+      <circle cx="1150" cy="95" r="2"><animate attributeName="opacity" values=".2;1;.2" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="1080" cy="305" r="2"><animate attributeName="opacity" values="1;.2;1" dur="4s" repeatCount="indefinite"/></circle>
+    </g>
+
+    <!-- Circuit details -->
+    <g stroke="#A78BFA" stroke-opacity=".45" stroke-width="1.4">
+      <path d="M650 95H720V120H770"/>
+      <path d="M680 275H755V250H800"/>
+      <path d="M1000 75H1050V105H1110"/>
+      <path d="M1020 280H1080V250H1140"/>
+    </g>
+    <g fill="#D8C7FF" filter="url(#glow)">
+      <circle cx="770" cy="120" r="3"/>
+      <circle cx="800" cy="250" r="3"/>
+      <circle cx="1110" cy="105" r="3"/>
+      <circle cx="1140" cy="250" r="3"/>
+    </g>
+
+    <!-- Branding -->
+    <rect x="54" y="48" width="4" height="25" rx="2" fill="url(#violet)"/>
+    <text x="70" y="65" fill="#C4B5FD" font-family="monospace" font-size="13" letter-spacing="3">COMPUTER VISION / AI LAB</text>
+
+    <text x="52" y="153" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="53" font-weight="700" letter-spacing="-2">VisionForge</text>
+    <text x="52" y="213" fill="url(#violet)" font-family="Arial, Helvetica, sans-serif" font-size="53" font-weight="700" letter-spacing="-1">AI</text>
+
+    <text x="55" y="251" fill="#D6D0E7" font-family="Arial, Helvetica, sans-serif" font-size="15">Building intelligent vision, one experiment at a time.</text>
+
+    <!-- Technology labels -->
+    <g font-family="monospace" font-size="11">
+      <rect x="54" y="280" width="82" height="27" rx="6" fill="#A78BFA" fill-opacity=".12" stroke="#A78BFA" stroke-opacity=".6"/>
+      <text x="95" y="297" fill="#E9D5FF" text-anchor="middle">PYTHON</text>
+
+      <rect x="145" y="280" width="120" height="27" rx="6" fill="#A78BFA" fill-opacity=".12" stroke="#A78BFA" stroke-opacity=".6"/>
+      <text x="205" y="297" fill="#E9D5FF" text-anchor="middle">COMPUTER VISION</text>
+
+      <rect x="274" y="280" width="112" height="27" rx="6" fill="#A78BFA" fill-opacity=".12" stroke="#A78BFA" stroke-opacity=".6"/>
+      <text x="330" y="297" fill="#E9D5FF" text-anchor="middle">MACHINE LEARNING</text>
+    </g>
+
+    <!-- Computer vision interface -->
+    <g transform="translate(815 78)">
+      <rect width="320" height="204" rx="14" fill="#100B1F" stroke="#A78BFA" stroke-opacity=".55"/>
+      <path d="M0 39H320" stroke="#A78BFA" stroke-opacity=".3"/>
+
+      <circle cx="18" cy="19" r="4" fill="#A78BFA"/>
+      <circle cx="32" cy="19" r="4" fill="#C4B5FD" opacity=".7"/>
+      <circle cx="46" cy="19" r="4" fill="#FFFFFF" opacity=".45"/>
+      <text x="301" y="23" fill="#C4B5FD" font-family="monospace" font-size="10" text-anchor="end">VISION_SCAN.EXE</text>
+
+      <!-- Analysis viewport -->
+      <rect x="20" y="55" width="168" height="125" rx="7" fill="#1B1430" stroke="#8B5CF6" stroke-opacity=".65"/>
+
+      <!-- Abstract image with detection box -->
+      <circle cx="104" cy="112" r="38" fill="#8B5CF6" fill-opacity=".1"/>
+      <path d="M75 112L88 91L101 99L118 80L140 103L132 132L110 147L87 133Z" fill="url(#violet)" fill-opacity=".6"/>
+      <path d="M68 76H84M68 76V92M137 76H153V92M68 145V161H84M137 161H153V145" stroke="#E9D5FF" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="104" cy="112" r="26" stroke="#C4B5FD" stroke-opacity=".7" stroke-dasharray="3 5"/>
+
+      <rect x="23" y="70" width="162" height="2" fill="url(#beam)">
+        <animate attributeName="y" values="70;165;70" dur="4s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Live analysis bars -->
+      <g font-family="monospace" font-size="10">
+        <text x="204" y="66" fill="#C4B5FD">ANALYSIS</text>
+        <text x="204" y="88" fill="#FFFFFF">Pixels</text>
+        <rect x="204" y="96" width="92" height="4" rx="2" fill="#302344"/>
+        <rect x="204" y="96" width="67" height="4" rx="2" fill="#A78BFA">
+          <animate attributeName="width" values="35;80;55;67" dur="4s" repeatCount="indefinite"/>
+        </rect>
+
+        <text x="204" y="119" fill="#FFFFFF">Features</text>
+        <rect x="204" y="127" width="92" height="4" rx="2" fill="#302344"/>
+        <rect x="204" y="127" width="54" height="4" rx="2" fill="#C4B5FD">
+          <animate attributeName="width" values="70;35;82;54" dur="5s" repeatCount="indefinite"/>
+        </rect>
+
+        <text x="204" y="150" fill="#FFFFFF">Patterns</text>
+        <rect x="204" y="158" width="92" height="4" rx="2" fill="#302344"/>
+        <rect x="204" y="158" width="73" height="4" rx="2" fill="#8B5CF6">
+          <animate attributeName="width" values="73;45;85;73" dur="4.5s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+    </g>
+
+    <!-- Footer -->
+    <path d="M54 329H1146" stroke="#A78BFA" stroke-opacity=".28"/>
+    <circle cx="58" cy="345" r="3" fill="#C4B5FD">
+      <animate attributeName="opacity" values="1;.25;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="69" y="349" fill="#B9ACD6" font-family="monospace" font-size="10" letter-spacing="1">OPEN SOURCE · EXPERIMENT · BUILD · IMPROVE</text>
+    <text x="1145" y="349" fill="#B9ACD6" font-family="monospace" font-size="10" text-anchor="end">RUHIOKI / 2026</text>
+  </g>
+</svg>

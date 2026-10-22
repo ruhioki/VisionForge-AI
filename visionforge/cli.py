@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from collections.abc import Sequence
 
+from visionforge.batch import batch_process
 from visionforge.color_analysis import analyze_colors
 from visionforge.comparison import create_comparison
 from visionforge.contours import detect_contours
@@ -65,6 +66,11 @@ def build_parser() -> argparse.ArgumentParser:
     contours.add_argument("--min-area", type=float, default=0.0, help="ignore contours smaller than this pixel area")
     contours.add_argument("--report", help="optional JSON report path")
 
+    batch = commands.add_parser("batch", help="process every supported image in a folder")
+    batch.add_argument("input_dir", help="folder containing source images")
+    batch.add_argument("-o", "--output-dir", required=True, help="folder for processed images and report")
+    batch.add_argument("--kind", choices=("blur", "sharpen", "threshold", "grayscale", "edges"), required=True, help="operation to apply to every image")
+
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
     return parser
@@ -97,6 +103,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report_path.parent.mkdir(parents=True, exist_ok=True)
                 report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
                 report["report_path"] = str(report_path)
+            print(json.dumps(report, indent=2))
+        elif args.command == "batch":
+            report = batch_process(args.input_dir, args.output_dir, args.kind)
             print(json.dumps(report, indent=2))
         elif args.command == "demo":
             report = run_demo(args.output_dir)

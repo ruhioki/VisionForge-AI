@@ -85,6 +85,8 @@ visionforge classify "path\\to\\image.jpg" --model "models\\classifier.onnx" --l
 
 The classifier expects a float32 NCHW model with three RGB channels and ImageNet mean/std normalization. Fixed model input dimensions are detected automatically; dynamic spatial dimensions default to 224 × 224. This is intended for compatible ImageNet-style classifiers, not arbitrary ONNX models. VisionForge does not download or bundle model weights. Check the model and label source licenses and confirm that the labels match the model before use. The `--provider` option accepts `auto`, `cpu`, or `cuda`. `auto` prefers CUDA when ONNX Runtime reports a compatible CUDA provider, otherwise it uses CPU. To try GPU inference, install a compatible `onnxruntime-gpu` build instead of the CPU `onnxruntime` package and ensure its CUDA/cuDNN requirements match your system. CUDA support depends on the installed runtime and drivers; the command reports the provider it actually selected.
 
+See [`docs/model-compatibility.md`](docs/model-compatibility.md) for model input requirements, label files, CUDA setup, licensing, and troubleshooting.
+
 ## Run it
 
 Show image metadata:

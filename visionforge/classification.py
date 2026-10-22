@@ -16,6 +16,7 @@ def classify_image(
     model_path: str | Path,
     labels_path: str | Path,
     top_k: int = 5,
+    provider: str = "auto",
 ) -> dict[str, Any]:
     """Classify one image with a user-supplied ImageNet-style ONNX model.
 
@@ -25,6 +26,8 @@ def classify_image(
     """
     if top_k < 1:
         raise ValueError("top_k must be at least 1")
+    if provider not in {"auto", "cpu", "cuda"}:
+        raise ValueError("provider must be one of: auto, cpu, cuda")
 
     image_file = Path(image_path).expanduser()
     model_file = Path(model_path).expanduser()
@@ -49,7 +52,17 @@ def classify_image(
             "ONNX Runtime is optional. Install it with: python -m pip install -e \".[onnx]\""
         ) from exc
 
-    session = onnxruntime.InferenceSession(str(model_file), providers=["CPUExecutionProvider"])
+    available = onnxruntime.get_available_providers()
+    if provider == "cuda" and "CUDAExecutionProvider" not in available:
+        raise RuntimeError("CUDAExecutionProvider is unavailable. Install a compatible onnxruntime-gpu build and CUDA/cuDNN runtime.")
+    selected_provider = (
+        "CUDAExecutionProvider"
+        if provider == "cuda" or (provider == "auto" and "CUDAExecutionProvider" in available)
+        else "CPUExecutionProvider"
+    )
+    if selected_provider not in available:
+        raise RuntimeError(f"{selected_provider} is unavailable in this ONNX Runtime installation")
+    session = onnxruntime.InferenceSession(str(model_file), providers=[selected_provider])
     inputs = session.get_inputs()
     if not inputs:
         raise ValueError("The ONNX model has no input tensor")
@@ -88,6 +101,7 @@ def classify_image(
         "model": str(model_file),
         "input_width": int(width),
         "input_height": int(height),
+        "execution_provider": selected_provider,
         "predictions": [
             {
                 "class_index": int(index),

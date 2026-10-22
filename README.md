@@ -233,8 +233,10 @@ VisionForge-AI/
 │   │   ├── bug_report.md
 │   │   └── feature_request.md
 │   ├── workflows/
-│   │   └── tests.yml
-│   └── PULL_REQUEST_TEMPLATE.md
+│   │   ├── tests.yml
+│   │   └── codeql.yml
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── dependabot.yml
 ├── pyproject.toml
 ├── requirements.txt
 ├── CONTRIBUTING.md
@@ -283,6 +285,10 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for development setup, test commands, d
 - Test using reproducible synthetic images.
 - Separate classical image processing from future model-based features.
 - Document limitations and respect dataset and model licenses.
+
+## Security and maintenance
+
+GitHub Actions runs the test suite and package-build smoke test. CodeQL performs scheduled Python security analysis, and Dependabot checks Python dependencies and GitHub Actions versions weekly. Review automated update PRs before merging them.
 
 ## About
 

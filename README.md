@@ -1,3 +1,13 @@
+<p align="center">
+  <img src="assets/visionforge-banner.svg" width="100%" alt="VisionForge AI animated computer vision banner"/>
+</p>
+
+<h1 align="center">VisionForge AI</h1>
+
+<p align="center">
+  <b>Building intelligent vision, one experiment at a time.</b><br/>
+  An open-source Python project for exploring image processing and computer vision.
+</p>
 # VisionForge AI
 
 <p align="center">

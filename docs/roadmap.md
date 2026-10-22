@@ -14,6 +14,8 @@
 - [x] Optional ONNX Runtime classification with top-k predictions
 - [x] Optional CUDA provider selection for compatible ONNX Runtime installations
 - [x] Reproducible CPU micro-benchmarks for common operations
+- [x] Four-corner document detection and perspective correction with a runnable synthetic example
+- [x] Clean downloadable source ZIP generator with exclusion tests
 - [x] Synthetic-image tests on Python 3.10, 3.11, and 3.12
 - [x] Wheel/source distribution build and CLI smoke tests in CI
 

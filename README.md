@@ -31,7 +31,9 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Batch-process supported image files in a folder and create a JSON success/failure report.
 - Compare same-sized images using mean squared error (MSE), root mean squared error (RMSE), and peak signal-to-noise ratio (PSNR).
 - Benchmark common image operations with warm-up iterations, timing statistics, and megapixels-per-second estimates.
+- Detect and perspective-correct a photographed document using its page outline.
 - Run an end-to-end demo that writes sample outputs and a JSON report.
+- Create a clean, downloadable source-project ZIP without local environments or generated outputs.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
 
@@ -88,6 +90,44 @@ The classifier expects a float32 NCHW model with three RGB channels and ImageNet
 See [`docs/model-compatibility.md`](docs/model-compatibility.md) for model input requirements, label files, CUDA setup, licensing, and troubleshooting.
 
 ## Run it
+
+### Scan a photographed document
+
+Correct perspective from a clear, four-sided page outline:
+
+```powershell
+visionforge scan "path\\to\\page-photo.jpg" -o "outputs\\page-scanned.png"
+```
+
+The command writes the corrected page and prints a JSON report with its dimensions and detected corners. The page should have a visible outline and occupy a substantial portion of the photo. Lower `--min-area` (a fraction from greater than 0 to 1; default `0.15`) to accept a smaller page:
+
+```powershell
+visionforge scan "path\\to\\page-photo.jpg" -o "outputs\\page-scanned.png" --min-area 0.08
+```
+
+Try a complete synthetic example, which needs no downloaded image:
+
+```powershell
+python examples/document_scanner.py
+```
+
+It creates the before and after images under `outputs\\document-scanner`.
+
+### Create a downloadable source bundle
+
+From the repository root, create `dist\\VisionForge-AI-source.zip`:
+
+```powershell
+python tools/create_source_bundle.py
+```
+
+The archive contains the source, documentation, examples, tests, and project metadata under a `VisionForge-AI` folder. It intentionally excludes Git history, virtual environments, caches, installed build outputs, and generated `outputs`.
+
+To choose a different archive path:
+
+```powershell
+python tools/create_source_bundle.py --output "path\\to\\VisionForge-AI-source.zip"
+```
 
 Show image metadata:
 

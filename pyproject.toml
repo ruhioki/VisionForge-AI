@@ -4,16 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "visionforge-ai"
-version = "0.1.0"
-description = "A learning-focused Python computer vision project."
+version = "0.2.0"
+description = "A learning-focused Python computer vision project built with OpenCV."
 requires-python = ">=3.10"
-dependencies = ["Pillow>=10.0.0"]
+dependencies = ["opencv-python>=4.10.0", "numpy>=1.26.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0"]
 
 [project.scripts]
 visionforge = "visionforge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["visionforge*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

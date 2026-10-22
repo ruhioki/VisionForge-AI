@@ -30,7 +30,7 @@ def _setup(tmp_path, monkeypatch):
     model_path.write_bytes(b"test model placeholder")
     labels_path = tmp_path / "labels.txt"
     labels_path.write_text("cat\ndog\ncar\n", encoding="utf-8")
-    fake_runtime = SimpleNamespace(InferenceSession=FakeSession)
+    fake_runtime = SimpleNamespace(InferenceSession=FakeSession, get_available_providers=lambda: ["CPUExecutionProvider"])
     monkeypatch.setitem(sys.modules, "onnxruntime", fake_runtime)
     return image_path, model_path, labels_path
 
@@ -42,6 +42,7 @@ def test_classification_returns_sorted_top_predictions(tmp_path, monkeypatch):
 
     assert result["input_width"] == 8
     assert result["input_height"] == 8
+    assert result["execution_provider"] == "CPUExecutionProvider"
     assert [item["label"] for item in result["predictions"]] == ["dog", "cat"]
     assert sum(item["confidence"] for item in result["predictions"]) < 1.0
 
@@ -57,3 +58,14 @@ def test_classification_rejects_label_count_mismatch(tmp_path, monkeypatch):
 
     with pytest.raises(ValueError, match="labels file contains 2 labels"):
         classify_image(image, model, labels)
+
+def test_classification_rejects_unavailable_cuda(tmp_path, monkeypatch):
+    image, model, labels = _setup(tmp_path, monkeypatch)
+
+    with pytest.raises(RuntimeError, match="CUDAExecutionProvider is unavailable"):
+        classify_image(image, model, labels, provider="cuda")
+
+
+def test_classification_rejects_unknown_provider():
+    with pytest.raises(ValueError, match="provider must be one of"):
+        classify_image("unused.png", "unused.onnx", "unused.txt", provider="tpu")

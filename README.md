@@ -156,6 +156,8 @@ VisionForge-AI/
 │   ├── histogram.py
 │   ├── filters.py
 │   ├── demo.py
+│   ├── comparison.py
+│   ├── contours.py
 │   └── cli.py
 ├── examples/
 │   ├── README.md
@@ -164,7 +166,9 @@ VisionForge-AI/
 │   ├── architecture.md
 │   └── roadmap.md
 ├── tests/
-│   └── test_image_info.py
+│   ├── test_image_info.py
+│   ├── test_comparison.py
+│   └── test_contours.py
 ├── .github/
 │   └── workflows/
 │       └── tests.yml

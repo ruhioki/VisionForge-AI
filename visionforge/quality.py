@@ -32,7 +32,7 @@ def calculate_image_metrics(reference_path: str | Path, candidate_path: str | Pa
     difference = reference.astype(np.float64) - candidate.astype(np.float64)
     mse = float(np.mean(np.square(difference)))
     rmse = float(np.sqrt(mse))
-    psnr = float("inf") if mse == 0 else float(20.0 * np.log10(255.0 / np.sqrt(mse)))
+    psnr = None if mse == 0 else float(20.0 * np.log10(255.0 / np.sqrt(mse)))
 
     return {
         "reference": str(reference_file),
@@ -43,6 +43,7 @@ def calculate_image_metrics(reference_path: str | Path, candidate_path: str | Pa
         "mse": mse,
         "rmse": rmse,
         "psnr_db": psnr,
+        "psnr_infinite": mse == 0.0,
         "identical": mse == 0.0,
         "interpretation": (
             "Images are pixel-identical after decoding."

@@ -26,6 +26,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Detect and measure contours with configurable thresholding, retrieval mode, and minimum area.
 - Batch-process supported image files in a folder and create a JSON success/failure report.
 - Compare same-sized images using mean squared error (MSE), root mean squared error (RMSE), and peak signal-to-noise ratio (PSNR).
+- Benchmark common image operations with warm-up iterations, timing statistics, and megapixels-per-second estimates.
 - Run an end-to-end demo that writes sample outputs and a JSON report.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
@@ -54,7 +55,7 @@ If PowerShell blocks environment activation, you can run the environment's Pytho
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
 
-## Optional AI image classification
+## Benchmark image operations\n\nMeasure in-memory CPU performance without including image loading or file-writing time:\n\n```powershell\nvisionforge benchmark "path\\to\\image.jpg" --kind edges --iterations 50 --warmup 5 --report "outputs\\benchmark.json"\n```\n\nSupported operations are `grayscale`, `edges`, `blur`, `sharpen`, and `threshold`. Results include mean, median, minimum, and maximum latency plus approximate megapixels per second. These are local micro-benchmarks, not a comparison between different computers or a GPU benchmark.\n\n## Optional AI image classification
 
 Install the optional ONNX Runtime dependency:
 
@@ -238,7 +239,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Create labeled side-by-side comparison images for processing results
 - [x] Add contour detection with configurable retrieval modes and JSON reports
 - [x] Add folder-based batch processing with per-file error reporting
-- [x] Add optional ONNX inference for compatible user-supplied image-classification models
+- [x] Add optional ONNX inference for compatible user-supplied image-classification models\n- [x] Add repeatable in-memory CPU benchmarks for core image operations
 - [ ] Add sample images with clear reuse licenses
 
 ## Development principles

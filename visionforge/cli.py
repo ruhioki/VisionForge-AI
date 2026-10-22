@@ -6,6 +6,7 @@ import sys
 from collections.abc import Sequence
 
 from visionforge.color_analysis import analyze_colors
+from visionforge.comparison import create_comparison
 from visionforge.demo import run_demo
 from visionforge.filters import apply_filter
 from visionforge.histogram import save_histogram
@@ -47,6 +48,13 @@ def build_parser() -> argparse.ArgumentParser:
     hist.add_argument("input", help="path to the source image")
     hist.add_argument("-o", "--output", required=True, help="where to save the histogram")
 
+    compare = commands.add_parser("compare", help="create a side-by-side image comparison")
+    compare.add_argument("original", help="path to the original image")
+    compare.add_argument("processed", help="path to the processed image")
+    compare.add_argument("-o", "--output", required=True, help="where to save the comparison image")
+    compare.add_argument("--left-label", default="Original", help="label for the left image")
+    compare.add_argument("--right-label", default="Processed", help="label for the right image")
+
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
     return parser
@@ -69,6 +77,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Saved {args.kind} output: {apply_filter(args.input, args.output, args.kind)}")
         elif args.command == "histogram":
             print(f"Saved histogram: {save_histogram(args.input, args.output)}")
+        elif args.command == "compare":
+            result = create_comparison(args.original, args.processed, args.output, args.left_label, args.right_label)
+            print(f"Saved comparison: {result}")
         elif args.command == "demo":
             report = run_demo(args.output_dir)
             print(json.dumps(report, indent=2))

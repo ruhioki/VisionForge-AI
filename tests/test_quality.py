@@ -23,7 +23,8 @@ def test_identical_images_have_zero_error_and_infinite_psnr(tmp_path):
     assert result["identical"] is True
     assert result["mse"] == 0.0
     assert result["rmse"] == 0.0
-    assert result["psnr_db"] == float("inf")
+    assert result["psnr_db"] is None
+    assert result["psnr_infinite"] is True
     assert result["width"] == 30
     assert result["height"] == 20
 

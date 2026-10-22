@@ -102,6 +102,7 @@ def test_filter_rejects_unknown_kind(sample_image, tmp_path):
 
 def test_demo_creates_outputs_and_json_report(tmp_path):
     import json
+
     from visionforge.demo import run_demo
 
     report = run_demo(tmp_path / "demo")

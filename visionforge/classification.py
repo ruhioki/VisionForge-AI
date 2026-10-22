@@ -1,8 +1,8 @@
 """Optional ONNX Runtime image classification for ImageNet-style models."""
 
+import importlib
 from pathlib import Path
 from typing import Any
-import importlib
 
 import cv2
 import numpy as np

@@ -77,6 +77,7 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("input_dir", help="folder containing source images")
     batch.add_argument("-o", "--output-dir", required=True, help="folder for processed images and report")
     batch.add_argument("--kind", choices=("blur", "sharpen", "threshold", "grayscale", "edges"), required=True, help="operation to apply to every image")
+    batch.add_argument("--report", help="JSON report path (default: <output-dir>/batch-report.json")
 
     classify = commands.add_parser("classify", help="classify an image with a user-supplied ONNX model")
     classify.add_argument("input", help="path to the source image")
@@ -127,6 +128,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(report, indent=2))
         elif args.command == "batch":
             report = batch_process(args.input_dir, args.output_dir, args.kind)
+            report_path = Path(args.report).expanduser() if args.report else Path(args.output_dir).expanduser() / "batch-report.json"
+            report_path.parent.mkdir(parents=True, exist_ok=True)
+            report["report_path"] = str(report_path)
+            report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report, indent=2))
         elif args.command == "classify":
             report = classify_image(args.input, args.model, args.labels, args.top_k)

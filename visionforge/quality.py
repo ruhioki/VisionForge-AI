@@ -1,5 +1,6 @@
 """Image similarity metrics for comparing a reference and candidate image."""
 
+import importlib
 from pathlib import Path
 from typing import Any
 

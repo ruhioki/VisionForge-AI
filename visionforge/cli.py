@@ -3,9 +3,10 @@
 import argparse
 import json
 import sys
-from pathlib import Path
 from collections.abc import Sequence
+from pathlib import Path
 
+from visionforge import __version__
 from visionforge.batch import batch_process
 from visionforge.benchmark import benchmark_image
 from visionforge.classification import classify_image
@@ -22,6 +23,7 @@ from visionforge.scan import scan_document
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="visionforge", description="Inspect images and run OpenCV processing.")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
 
     info = commands.add_parser("info", help="show image metadata")
@@ -80,7 +82,7 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("input_dir", help="folder containing source images")
     batch.add_argument("-o", "--output-dir", required=True, help="folder for processed images and report")
     batch.add_argument("--kind", choices=("blur", "sharpen", "threshold", "grayscale", "edges"), required=True, help="operation to apply to every image")
-    batch.add_argument("--report", help="JSON report path (default: <output-dir>/batch-report.json")
+    batch.add_argument("--report", help="JSON report path (default: <output-dir>/batch-report.json)")
 
     benchmark = commands.add_parser("benchmark", help="measure an image operation in memory")
     benchmark.add_argument("input", help="path to the source image")

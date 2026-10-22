@@ -8,9 +8,13 @@ Notable changes to VisionForge AI are documented here.
 - Document scanning with four-corner page detection and perspective correction.
 - A synthetic document-scanner example requiring no external dataset.
 - A tested source ZIP generator that excludes repository history, caches, environments, and generated outputs.
+- `visionforge --version` flag.
+- Tests for filters, color analysis, histograms, the demo pipeline, and the CLI (47 -> 69 tests).
+- Ruff linting, run locally and in CI.
 
 ### Fixed
-- Align the package's `__version__` with the current 0.3.0 project metadata.
+- `visionforge.__version__` reported `0.2.0` while the package metadata said `0.3.0`; a test now keeps them in sync.
+- Missing closing parenthesis in the `batch --report` help text.
 
 ## 0.3.0 - 2026-10-22
 

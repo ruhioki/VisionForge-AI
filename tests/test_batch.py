@@ -74,6 +74,7 @@ def test_cli_help_lists_batch_command():
 
 def test_batch_cli_writes_json_report(tmp_path, monkeypatch, capsys):
     import json
+
     import visionforge.cli as cli
 
     source = tmp_path / "images"

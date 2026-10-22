@@ -81,3 +81,41 @@ def test_cli_help_lists_commands():
     help_text = build_parser().format_help()
     assert "colors" in help_text
     assert "edges" in help_text
+
+
+def test_histogram_writes_image(sample_image, tmp_path):
+    from visionforge.histogram import save_histogram
+
+    output = save_histogram(sample_image, tmp_path / "histogram.png")
+    result = cv2.imread(str(output))
+    assert result is not None
+    assert result.shape[1] == 768
+    assert result.shape[0] == 420
+
+
+def test_filter_rejects_unknown_kind(sample_image, tmp_path):
+    from visionforge.filters import apply_filter
+
+    with pytest.raises(ValueError, match="Unsupported filter"):
+        apply_filter(sample_image, tmp_path / "out.png", "unknown")
+
+
+def test_demo_creates_outputs_and_json_report(tmp_path):
+    import json
+    from visionforge.demo import run_demo
+
+    report = run_demo(tmp_path / "demo")
+    assert report["project"] == "VisionForge AI"
+    assert (tmp_path / "demo" / "visionforge-demo.png").is_file()
+    assert (tmp_path / "demo" / "visionforge-edges.png").is_file()
+    assert (tmp_path / "demo" / "visionforge-grayscale.png").is_file()
+    assert (tmp_path / "demo" / "visionforge-histogram.png").is_file()
+    saved = json.loads((tmp_path / "demo" / "report.json").read_text(encoding="utf-8"))
+    assert "color_analysis" in saved
+
+
+def test_histogram_validates_canvas_dimensions(sample_image, tmp_path):
+    from visionforge.histogram import save_histogram
+
+    with pytest.raises(ValueError, match="at least"):
+        save_histogram(sample_image, tmp_path / "small.png", width=100)

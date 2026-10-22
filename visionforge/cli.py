@@ -6,6 +6,9 @@ import sys
 from collections.abc import Sequence
 
 from visionforge.color_analysis import analyze_colors
+from visionforge.demo import run_demo
+from visionforge.filters import apply_filter
+from visionforge.histogram import save_histogram
 from visionforge.image_info import convert_grayscale, detect_edges, inspect_image, resize_image
 
 
@@ -34,6 +37,18 @@ def build_parser() -> argparse.ArgumentParser:
     resize.add_argument("-o", "--output", required=True, help="where to save the result")
     resize.add_argument("--width", type=int, required=True, help="output width in pixels")
     resize.add_argument("--height", type=int, required=True, help="output height in pixels")
+
+    filt = commands.add_parser("filter", help="apply blur, sharpen, or threshold")
+    filt.add_argument("input", help="path to the source image")
+    filt.add_argument("--kind", choices=("blur", "sharpen", "threshold"), required=True)
+    filt.add_argument("-o", "--output", required=True, help="where to save the result")
+
+    hist = commands.add_parser("histogram", help="save an RGB channel histogram image")
+    hist.add_argument("input", help="path to the source image")
+    hist.add_argument("-o", "--output", required=True, help="where to save the histogram")
+
+    demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
+    demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
     return parser
 
 
@@ -41,22 +56,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         if args.command == "info":
-            result = inspect_image(args.input)
+            print(json.dumps(inspect_image(args.input), indent=2))
         elif args.command == "colors":
-            result = analyze_colors(args.input)
+            print(json.dumps(analyze_colors(args.input), indent=2))
         elif args.command == "edges":
             print(f"Saved edge map: {detect_edges(args.input, args.output, args.low, args.high)}")
-            return 0
         elif args.command == "grayscale":
             print(f"Saved grayscale image: {convert_grayscale(args.input, args.output)}")
-            return 0
         elif args.command == "resize":
             print(f"Saved resized image: {resize_image(args.input, args.output, args.width, args.height)}")
-            return 0
-        else:
-            return 2
-        print(json.dumps(result, indent=2))
-    except (OSError, ValueError) as exc:
+        elif args.command == "filter":
+            print(f"Saved {args.kind} output: {apply_filter(args.input, args.output, args.kind)}")
+        elif args.command == "histogram":
+            print(f"Saved histogram: {save_histogram(args.input, args.output)}")
+        elif args.command == "demo":
+            report = run_demo(args.output_dir)
+            print(json.dumps(report, indent=2))
+    except (OSError, ValueError, RuntimeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     return 0

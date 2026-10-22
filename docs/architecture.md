@@ -1,0 +1,21 @@
+# VisionForge AI architecture
+
+VisionForge is organized as a small Python package with a CLI layer and reusable processing functions.
+
+- `visionforge/cli.py`: parses commands and reports results or user-friendly errors.
+- `visionforge/image_info.py`: image loading, metadata, grayscale, resizing, and Canny edge detection.
+- `visionforge/color_analysis.py`: average RGB values and grayscale brightness statistics.
+- `visionforge/histogram.py`: draws RGB channel histograms with OpenCV.
+- `visionforge/filters.py`: blur, sharpen, and binary threshold filters.
+- `examples/generate_demo.py`: creates a deterministic synthetic image and runs the processing pipeline.
+- `tests/`: regression tests built around synthetic images, avoiding external datasets.
+
+## Design decisions
+
+OpenCV uses BGR channel ordering for loaded color images, so code explicitly converts channel means to RGB for user-facing statistics. Image outputs are written only to the requested destination; parent directories are created as needed. Model-based classification and object detection are intentionally out of scope for the current classical image-processing release.
+
+## Data flow
+
+Input image -> validated loader -> processing / analysis function -> output image or JSON metadata
+
+The CLI is a thin interface over these functions so they can also be reused by notebooks or a future graphical interface.

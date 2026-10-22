@@ -21,6 +21,9 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Analyze average RGB channel values and grayscale brightness statistics.
 - Convert images to grayscale.
 - Resize images to specified dimensions.
+- Apply blur, sharpening, and binary threshold filters.
+- Generate an RGB channel histogram image.
+- Run an end-to-end demo that writes sample outputs and a JSON report.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
 
@@ -93,13 +96,27 @@ python -m visionforge.cli --help
 python -m visionforge.cli info "C:\\path\\to\\your-image.png"
 ```
 
-Use your own image path for these commands. To create a reproducible demo image and generate all the outputs without downloading a dataset, run:
+Use your own image path for these commands. Apply a filter:
 
 ```powershell
-python examples/generate_demo.py
+visionforge filter "path\\to\\your-image.jpg" --kind sharpen -o "outputs\\sharpened.png"
 ```
 
-The script creates a synthetic image and writes the original, edge map, grayscale image, and resized image to `outputs\` (which is ignored by Git).
+Generate a color histogram:
+
+```powershell
+visionforge histogram "path\\to\\your-image.jpg" -o "outputs\\histogram.png"
+```
+
+Run the complete reproducible demo without downloading a dataset:
+
+```powershell
+visionforge demo
+# Or choose another output folder:
+visionforge demo --output-dir "outputs\\first-run"
+```
+
+The demo creates a synthetic image, processes it, and writes edge, grayscale, resized, histogram images, and `report.json` into the output directory (ignored by Git). You can also run `python examples/generate_demo.py` from a source checkout.
 
 ## Run tests
 
@@ -119,9 +136,16 @@ VisionForge-AI/
 │   ├── __init__.py
 │   ├── image_info.py
 │   ├── color_analysis.py
+│   ├── histogram.py
+│   ├── filters.py
+│   ├── demo.py
 │   └── cli.py
 ├── examples/
+│   ├── README.md
 │   └── generate_demo.py
+├── docs/
+│   ├── architecture.md
+│   └── roadmap.md
 ├── tests/
 │   └── test_image_info.py
 ├── .github/
@@ -151,9 +175,12 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Command-line interface
 - [x] Automated tests for core operations and invalid inputs
 - [x] Add basic RGB color and brightness analysis
+- [x] Add blur, sharpen, and binary threshold filters
+- [x] Add RGB histogram rendering
+- [x] Add a CLI demo with generated sample outputs and a JSON report
 - [x] Add a reproducible demo that generates its own test image and outputs
-- [ ] Add histogram visualizations
 - [ ] Add side-by-side visual comparison reports
+- [ ] Add contour detection with configurable retrieval modes
 - [ ] Explore pretrained classification models in a separate optional module
 - [ ] Add sample images with clear reuse licenses
 

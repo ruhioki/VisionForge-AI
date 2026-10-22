@@ -23,6 +23,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Resize images to specified dimensions.
 - Apply blur, sharpening, and binary threshold filters.
 - Generate an RGB channel histogram image.
+- Detect and measure contours with configurable thresholding, retrieval mode, and minimum area.
 - Run an end-to-end demo that writes sample outputs and a JSON report.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
@@ -108,6 +109,14 @@ Generate a color histogram:
 visionforge histogram "path\\to\\your-image.jpg" -o "outputs\\histogram.png"
 ```
 
+Detect contours and save an overlay plus a JSON report:
+
+```powershell
+visionforge contours "path\\to\\your-image.png" -o "outputs\\contours.png" --threshold 127 --retrieval external --min-area 25 --report "outputs\\contours.json"
+```
+
+The command thresholds the image, draws detected contour outlines, and reports each retained contour's area and bounding box. Retrieval modes are `external`, `list`, `tree`, and `ccomp`.
+
 Compare an original image with a processed result in one labeled image:
 
 ```powershell
@@ -147,6 +156,8 @@ VisionForge-AI/
 │   ├── histogram.py
 │   ├── filters.py
 │   ├── demo.py
+│   ├── comparison.py
+│   ├── contours.py
 │   └── cli.py
 ├── examples/
 │   ├── README.md
@@ -155,7 +166,9 @@ VisionForge-AI/
 │   ├── architecture.md
 │   └── roadmap.md
 ├── tests/
-│   └── test_image_info.py
+│   ├── test_image_info.py
+│   ├── test_comparison.py
+│   └── test_contours.py
 ├── .github/
 │   └── workflows/
 │       └── tests.yml
@@ -188,8 +201,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Add a CLI demo with generated sample outputs and a JSON report
 - [x] Add a reproducible demo that generates its own test image and outputs
 - [x] Create labeled side-by-side comparison images for processing results
-- [ ] Add side-by-side visual comparison reports
-- [ ] Add contour detection with configurable retrieval modes
+- [x] Add contour detection with configurable retrieval modes and JSON reports
 - [ ] Explore pretrained classification models in a separate optional module
 - [ ] Add sample images with clear reuse licenses
 

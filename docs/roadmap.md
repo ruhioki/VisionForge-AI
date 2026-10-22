@@ -13,8 +13,8 @@
 
 ## Next
 
-- [ ] Add side-by-side comparison sheets for all processing outputs
-- [ ] Add contour detection with configurable retrieval modes
+- [x] Add labeled side-by-side comparison images for processing outputs
+- [x] Add contour detection with configurable retrieval modes and JSON reports
 - [ ] Add optional pretrained classification inference with clear model/licensing notes
 - [ ] Benchmark CPU processing and document reproducible measurements
 - [ ] Consider GPU acceleration only for operations and hardware that support it

@@ -5,23 +5,19 @@ import json
 import sys
 from collections.abc import Sequence
 
-from visionforge.image_info import (
-    convert_grayscale,
-    detect_edges,
-    inspect_image,
-    resize_image,
-)
+from visionforge.color_analysis import analyze_colors
+from visionforge.image_info import convert_grayscale, detect_edges, inspect_image, resize_image
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="visionforge",
-        description="Inspect images and run basic OpenCV processing.",
-    )
+    parser = argparse.ArgumentParser(prog="visionforge", description="Inspect images and run OpenCV processing.")
     commands = parser.add_subparsers(dest="command", required=True)
 
     info = commands.add_parser("info", help="show image metadata")
     info.add_argument("input", help="path to the source image")
+
+    colors = commands.add_parser("colors", help="analyze average RGB color and brightness")
+    colors.add_argument("input", help="path to the source image")
 
     edges = commands.add_parser("edges", help="run Canny edge detection")
     edges.add_argument("input", help="path to the source image")
@@ -42,17 +38,24 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = build_parser()
-    args = parser.parse_args(argv)
+    args = build_parser().parse_args(argv)
     try:
         if args.command == "info":
-            print(json.dumps(inspect_image(args.input), indent=2))
+            result = inspect_image(args.input)
+        elif args.command == "colors":
+            result = analyze_colors(args.input)
         elif args.command == "edges":
             print(f"Saved edge map: {detect_edges(args.input, args.output, args.low, args.high)}")
+            return 0
         elif args.command == "grayscale":
             print(f"Saved grayscale image: {convert_grayscale(args.input, args.output)}")
+            return 0
         elif args.command == "resize":
             print(f"Saved resized image: {resize_image(args.input, args.output, args.width, args.height)}")
+            return 0
+        else:
+            return 2
+        print(json.dumps(result, indent=2))
     except (OSError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

@@ -25,6 +25,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Generate an RGB channel histogram image.
 - Detect and measure contours with configurable thresholding, retrieval mode, and minimum area.
 - Batch-process supported image files in a folder and create a JSON success/failure report.
+- Compare same-sized images using mean squared error (MSE), root mean squared error (RMSE), and peak signal-to-noise ratio (PSNR).
 - Run an end-to-end demo that writes sample outputs and a JSON report.
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
@@ -125,6 +126,14 @@ visionforge compare "path\\to\\original.jpg" "path\\to\\processed.png" -o "outpu
 ```
 
 The comparison tool preserves each image's aspect ratio, fits both into a shared-height canvas, and adds readable labels. It is useful for reviewing filters and edge-detection results side by side.
+
+Compare a reference image with a processed candidate using pixel-level quality metrics:
+
+```powershell
+visionforge metrics "outputs\\original.png" "outputs\\processed.png" --report "outputs\\metrics.json"
+```
+
+MSE and RMSE measure average pixel error; lower values mean closer pixel values. PSNR is reported in decibels, with higher values indicating closer similarity. Identical decoded images produce infinite PSNR. Images must have the same dimensions; this is a pixel-level metric, not a perceptual quality score.
 
 Process every supported image in a folder and write a JSON summary:
 

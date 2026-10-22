@@ -14,6 +14,7 @@ from visionforge.demo import run_demo
 from visionforge.filters import apply_filter
 from visionforge.histogram import save_histogram
 from visionforge.image_info import convert_grayscale, detect_edges, inspect_image, resize_image
+from visionforge.quality import calculate_image_metrics
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -58,6 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     compare.add_argument("--left-label", default="Original", help="label for the left image")
     compare.add_argument("--right-label", default="Processed", help="label for the right image")
 
+    metrics = commands.add_parser("metrics", help="measure pixel-level similarity between two same-sized images")
+    metrics.add_argument("reference", help="path to the reference image")
+    metrics.add_argument("candidate", help="path to the image being evaluated")
+    metrics.add_argument("--report", help="optional JSON report path")
+
     contours = commands.add_parser("contours", help="detect and measure image contours")
     contours.add_argument("input", help="path to the source image")
     contours.add_argument("-o", "--output", required=True, help="where to save the contour overlay")
@@ -96,6 +102,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "compare":
             result = create_comparison(args.original, args.processed, args.output, args.left_label, args.right_label)
             print(f"Saved comparison: {result}")
+        elif args.command == "metrics":
+            report = calculate_image_metrics(args.reference, args.candidate)
+            if args.report:
+                report_path = Path(args.report).expanduser()
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                report_path.write_text(json.dumps(report, indent=2, allow_nan=True), encoding="utf-8")
+                report["report_path"] = str(report_path)
+            print(json.dumps(report, indent=2, allow_nan=True))
         elif args.command == "contours":
             report = detect_contours(args.input, args.output, args.threshold, args.retrieval, args.min_area)
             if args.report:

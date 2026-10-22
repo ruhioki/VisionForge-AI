@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Tests-pytest-0A9EDC?style=for-the-badge" alt="pytest"/>
 </p>
 
-## What it does
+## Release status\n\nThe project is preparing version **0.3.0**. See [`CHANGELOG.md`](CHANGELOG.md) for the feature summary and [`docs/roadmap.md`](docs/roadmap.md) for what remains.\n\n## What it does
 
 VisionForge AI is a learning-focused computer-vision project. Its first working OpenCV toolkit can:
 

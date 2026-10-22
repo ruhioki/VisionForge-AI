@@ -30,7 +30,7 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 - Save results to a chosen output path, creating parent folders when needed.
 - Validate parameters and show readable errors for files that cannot be opened.
 
-This release uses classical image processing. It does not claim to provide trained image classification or object-detection models yet.
+Classical image processing works with the base install. An optional ONNX Runtime classifier can run a compatible model you provide; model weights and label files are not bundled.
 
 ## Requirements
 
@@ -53,6 +53,22 @@ If PowerShell blocks environment activation, you can run the environment's Pytho
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
+
+## Optional AI image classification
+
+Install the optional ONNX Runtime dependency:
+
+```powershell
+python -m pip install -e ".[onnx]"
+```
+
+Provide an ONNX image-classification model and a text file containing one label per line in the exact class order expected by that model:
+
+```powershell
+visionforge classify "path\\to\\image.jpg" --model "models\\classifier.onnx" --labels "models\\labels.txt" --top-k 5
+```
+
+The classifier expects a float32 NCHW model with three RGB channels and ImageNet mean/std normalization. Fixed model input dimensions are detected automatically; dynamic spatial dimensions default to 224 × 224. This is intended for compatible ImageNet-style classifiers, not arbitrary ONNX models. VisionForge does not download or bundle model weights. Check the model and label source licenses and confirm that the labels match the model before use. The inference command currently uses the CPU execution provider.
 
 ## Run it
 
@@ -222,7 +238,7 @@ Results depend on image content, noise, lighting, and threshold choices. Edge de
 - [x] Create labeled side-by-side comparison images for processing results
 - [x] Add contour detection with configurable retrieval modes and JSON reports
 - [x] Add folder-based batch processing with per-file error reporting
-- [ ] Explore pretrained classification models in a separate optional module
+- [x] Add optional ONNX inference for compatible user-supplied image-classification models
 - [ ] Add sample images with clear reuse licenses
 
 ## Development principles

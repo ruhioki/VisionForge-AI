@@ -7,6 +7,7 @@ from pathlib import Path
 from collections.abc import Sequence
 
 from visionforge.batch import batch_process
+from visionforge.classification import classify_image
 from visionforge.color_analysis import analyze_colors
 from visionforge.comparison import create_comparison
 from visionforge.contours import detect_contours
@@ -77,6 +78,12 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("-o", "--output-dir", required=True, help="folder for processed images and report")
     batch.add_argument("--kind", choices=("blur", "sharpen", "threshold", "grayscale", "edges"), required=True, help="operation to apply to every image")
 
+    classify = commands.add_parser("classify", help="classify an image with a user-supplied ONNX model")
+    classify.add_argument("input", help="path to the source image")
+    classify.add_argument("--model", required=True, help="path to a compatible ONNX classification model")
+    classify.add_argument("--labels", required=True, help="text file with one class label per line")
+    classify.add_argument("--top-k", type=int, default=5, help="number of predictions to show (default: 5)")
+
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
     return parser
@@ -120,6 +127,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(report, indent=2))
         elif args.command == "batch":
             report = batch_process(args.input_dir, args.output_dir, args.kind)
+            print(json.dumps(report, indent=2))
+        elif args.command == "classify":
+            report = classify_image(args.input, args.model, args.labels, args.top_k)
             print(json.dumps(report, indent=2))
         elif args.command == "demo":
             report = run_demo(args.output_dir)

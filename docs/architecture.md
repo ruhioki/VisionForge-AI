@@ -5,18 +5,21 @@ VisionForge is organized as a small Python package with a CLI layer and reusable
 - `visionforge/cli.py`: parses commands and reports results or user-friendly errors.
 - `visionforge/classification.py`: optional ONNX Runtime inference for compatible ImageNet-style classifiers.
 - `visionforge/benchmark.py`: repeatable in-memory CPU timing for common operations.
-- `visionforge/quality.py`: computes pixel-level MSE, RMSE, and PSNR for same-sized images.
+- `visionforge/quality.py`: computes pixel-level MSE, RMSE, and PSNR, with optional SSIM.
 - `visionforge/batch.py`: processes folders of images and records per-file outcomes.
 - `visionforge/image_info.py`: image loading, metadata, grayscale, resizing, and Canny edge detection.
 - `visionforge/color_analysis.py`: average RGB values and grayscale brightness statistics.
 - `visionforge/histogram.py`: draws RGB channel histograms with OpenCV.
 - `visionforge/filters.py`: blur, sharpen, and binary threshold filters.
+- `visionforge/comparison.py`: creates labeled side-by-side image comparisons.
+- `visionforge/contours.py`: detects contours and reports geometric measurements.
+- `visionforge/demo.py`: generates synthetic inputs and reproducible example outputs.
 - `examples/generate_demo.py`: creates a deterministic synthetic image and runs the processing pipeline.
 - `tests/`: regression tests built around synthetic images, avoiding external datasets.
 
 ## Design decisions
 
-OpenCV uses BGR channel ordering for loaded color images, so code explicitly converts channel means to RGB for user-facing statistics. Image outputs are written only to the requested destination; parent directories are created as needed. Model-based classification and object detection are intentionally out of scope for the current classical image-processing release.
+OpenCV uses BGR channel ordering for loaded color images, so code explicitly converts channel means to RGB for user-facing statistics. Image outputs are written only to the requested destination; parent directories are created as needed. Classical image processing is available in the base install. ONNX classification and SSIM are optional extras; the project does not bundle model weights or implement object detection yet.
 
 ## Data flow
 

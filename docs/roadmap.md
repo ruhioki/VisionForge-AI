@@ -21,7 +21,7 @@
 
 - [ ] Add small sample images with explicit reuse licenses
 - [ ] Add end-to-end tests for model loading against a documented, redistributable sample model
-- [ ] Add optional perceptual image metrics such as SSIM with clear dependency/licensing notes
+- [x] Add optional SSIM with a separate dependency extra and clear dimension checks
 - [ ] Publish a tagged release after the release checklist is verified
 
 Features should be marked complete only after implementation, documentation, and automated tests are in place.

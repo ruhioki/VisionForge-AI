@@ -7,6 +7,7 @@ from collections.abc import Sequence
 
 from visionforge.color_analysis import analyze_colors
 from visionforge.comparison import create_comparison
+from visionforge.contours import detect_contours
 from visionforge.demo import run_demo
 from visionforge.filters import apply_filter
 from visionforge.histogram import save_histogram
@@ -55,6 +56,14 @@ def build_parser() -> argparse.ArgumentParser:
     compare.add_argument("--left-label", default="Original", help="label for the left image")
     compare.add_argument("--right-label", default="Processed", help="label for the right image")
 
+    contours = commands.add_parser("contours", help="detect and measure image contours")
+    contours.add_argument("input", help="path to the source image")
+    contours.add_argument("-o", "--output", required=True, help="where to save the contour overlay")
+    contours.add_argument("--threshold", type=int, default=127, help="binary threshold from 0 to 255")
+    contours.add_argument("--retrieval", choices=("external", "list", "tree", "ccomp"), default="external", help="contour retrieval mode")
+    contours.add_argument("--min-area", type=float, default=0.0, help="ignore contours smaller than this pixel area")
+    contours.add_argument("--report", help="optional JSON report path")
+
     demo = commands.add_parser("demo", help="generate sample outputs without a dataset")
     demo.add_argument("-o", "--output-dir", default="outputs", help="output directory (default: outputs)")
     return parser
@@ -80,6 +89,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "compare":
             result = create_comparison(args.original, args.processed, args.output, args.left_label, args.right_label)
             print(f"Saved comparison: {result}")
+        elif args.command == "contours":
+            report = detect_contours(args.input, args.output, args.threshold, args.retrieval, args.min_area)
+            if args.report:
+                report_path = __import__("pathlib").Path(args.report).expanduser()
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+                report["report_path"] = str(report_path)
+            print(json.dumps(report, indent=2))
         elif args.command == "demo":
             report = run_demo(args.output_dir)
             print(json.dumps(report, indent=2))

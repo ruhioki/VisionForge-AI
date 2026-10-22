@@ -67,3 +67,30 @@ def test_cli_help_lists_metrics_command():
     from visionforge.cli import build_parser
 
     assert "metrics" in build_parser().format_help()
+
+def test_ssim_is_added_when_requested(tmp_path, monkeypatch):
+    import sys
+    from types import SimpleNamespace
+
+    reference = tmp_path / "reference.png"
+    candidate = tmp_path / "candidate.png"
+    image = np.full((12, 12, 3), 120, dtype=np.uint8)
+    _save(reference, image)
+    _save(candidate, image.copy())
+    fake_metrics = SimpleNamespace(structural_similarity=lambda *args, **kwargs: 1.0)
+    monkeypatch.setitem(sys.modules, "skimage", SimpleNamespace(__path__=[]))
+    monkeypatch.setitem(sys.modules, "skimage.metrics", fake_metrics)
+
+    result = calculate_image_metrics(reference, candidate, include_ssim=True)
+
+    assert result["ssim"] == 1.0
+
+
+def test_ssim_rejects_tiny_images(tmp_path):
+    reference = tmp_path / "reference.png"
+    candidate = tmp_path / "candidate.png"
+    _save(reference, np.zeros((2, 4, 3), dtype=np.uint8))
+    _save(candidate, np.zeros((2, 4, 3), dtype=np.uint8))
+
+    with pytest.raises(ValueError, match="at least 3 pixels"):
+        calculate_image_metrics(reference, candidate, include_ssim=True)

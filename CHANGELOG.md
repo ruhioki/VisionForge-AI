@@ -5,6 +5,8 @@ Notable changes to VisionForge AI are documented here.
 ## Unreleased
 
 ### Added
+- Browser workbench quick presets, original-image export, image metadata, and processing-time feedback.
+- Static browser-app regression tests covering core controls, privacy messaging, the PWA manifest, and offline shell assets.
 - Document scanning with four-corner page detection and perspective correction.
 - A synthetic document-scanner example requiring no external dataset.
 - A tested source ZIP generator that excludes repository history, caches, environments, and generated outputs.

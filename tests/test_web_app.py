@@ -30,7 +30,7 @@ def test_browser_app_explains_privacy_and_filter_limitations() -> None:
     html = (WEB / "index.html").read_text(encoding="utf-8").lower()
     assert "not uploaded" in html
     assert "sobel" in html
-    assert "not the exact opencv" in html
+    assert "not opencv's exact canny algorithm" in html
 
 
 def test_manifest_is_valid_and_points_to_existing_assets() -> None:

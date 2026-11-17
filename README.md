@@ -52,6 +52,8 @@ python -m streamlit run app.py
 
 The app runs locally by default. To publish it publicly, deploy it to a Streamlit-compatible host and review that host's privacy settings first.
 
+For an evaluation-ready walkthrough, test checklist, and questions for technical reviewers, see [the industry review brief](docs/industry-review.md). Feedback is being requested publicly in [issue #25](https://github.com/ruhioki/VisionForge-AI/issues/25); no external review is claimed until a reviewer responds.
+
 ## Requirements
 
 - Python 3.10 or newer

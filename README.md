@@ -39,6 +39,17 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 
 Classical image processing works with the base install. An optional ONNX Runtime classifier can run a compatible model you provide; model weights and label files are not bundled.
 
+
+## Mobile browser app
+
+A lightweight browser-based companion is available in `web-app/`. It performs grayscale conversion, Sobel-gradient edge detection, blur, sharpening, thresholding, histogram display, and PNG export directly in your browser. It does not upload selected images.
+
+Try the hosted version (after GitHub Pages deployment completes): https://ruhioki.github.io/VisionForge-AI/
+
+You can also run it locally by opening `web-app/index.html` in a modern browser. For offline/PWA installation, use the hosted HTTPS version; service workers do not run from a local `file://` URL. On Android, open the hosted page in Chrome and choose the browser menu's **Add to Home screen** option if available.
+
+The browser edge filter uses a Sobel gradient approximation, not the exact OpenCV Canny implementation. This frontend is a demonstration companion, while the Python/OpenCV application remains the main project. The GitHub Actions workflow `.github/workflows/deploy-visionforge-pages.yml` publishes the static app to GitHub Pages when Pages is enabled for the repository.
+
 ## Interactive web app
 
 VisionForge includes an optional Streamlit workbench for interactive image processing. It supports grayscale conversion, Canny edge detection, blur, sharpening, binary thresholding, RGB histograms, image details, and PNG downloads. Processing runs in the app process; images are not sent to a separate VisionForge service.

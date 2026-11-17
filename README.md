@@ -42,7 +42,7 @@ Classical image processing works with the base install. An optional ONNX Runtime
 
 ## Mobile browser app
 
-A lightweight browser-based companion is available in `web-app/`. It performs grayscale conversion, Sobel-gradient edge detection, blur, sharpening, thresholding, histogram display, and PNG export directly in your browser. It does not upload selected images.
+A lightweight browser-based companion is available in `web-app/`. It performs grayscale conversion, Sobel-gradient edge detection, blur, sharpening, thresholding, histogram display, quick presets, image-size details, processing-time feedback, and separate original/result PNG downloads directly in your browser. It does not upload selected images.
 
 Try the hosted version (after GitHub Pages deployment completes): https://ruhioki.github.io/VisionForge-AI/
 

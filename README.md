@@ -39,6 +39,19 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 
 Classical image processing works with the base install. An optional ONNX Runtime classifier can run a compatible model you provide; model weights and label files are not bundled.
 
+## Interactive web app
+
+VisionForge includes an optional Streamlit workbench for interactive image processing. It supports grayscale conversion, Canny edge detection, blur, sharpening, binary thresholding, RGB histograms, image details, and PNG downloads. Processing runs in the app process; images are not sent to a separate VisionForge service.
+
+Install and launch it from the repository root:
+
+```powershell
+python -m pip install -e ".[app]"
+python -m streamlit run app.py
+```
+
+The app runs locally by default. To publish it publicly, deploy it to a Streamlit-compatible host and review that host's privacy settings first.
+
 ## Requirements
 
 - Python 3.10 or newer

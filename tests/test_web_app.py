@@ -46,7 +46,9 @@ def test_owner_dashboard_is_configured_for_secure_supabase_auth() -> None:
     admin = (WEB / "admin.html").read_text(encoding="utf-8")
     config = (WEB / "supabase-config.js").read_text(encoding="utf-8")
     schema = (ROOT / "supabase" / "owner-dashboard.sql").read_text(encoding="utf-8").lower()
-    assert "signInWithOtp" in admin
+    assert "signInWithOAuth" in admin
+    assert 'provider: "github"' in admin
+    assert "github-login" in admin
     assert "mo655099@gmail.com" in config
     assert "service-role" in admin.lower()
     assert "enable row level security" in schema

@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v4" in worker
+    assert "visionforge-image-lab-v5" in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
@@ -60,3 +60,5 @@ def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
     assert "site_admins" in schema
     assert "is_site_admin()" in schema
     assert "using (published = true)" in schema
+    assert "add column if not exists" in schema
+    assert "nullif(lower(i.identity_data" in schema

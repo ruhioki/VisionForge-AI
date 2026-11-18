@@ -7,7 +7,7 @@
 </style></head><body><main class="shell">
 <div class="top"><div class="brand">VisionForge <span>AI</span> / Owner</div><a href="./index.html">← Back to Image Lab</a></div>
 <section class="card"><h1>Owner dashboard</h1><p class="muted">Edit public homepage text. Access is restricted to the configured owner account.</p><div id="setup" class="notice">Checking Supabase configuration…</div></section>
-<section id="login-card" class="card hidden"><h2>Secure owner sign-in</h2><p class="muted">Sign in with the GitHub account linked to the owner email.</p><div class="actions"><button id="github-login" class="primary">Continue with GitHub</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Only the verified owner email thestromer90@gmail.com can manage content.</p></section>
+<section id="login-card" class="card hidden"><h2>Sign in to VisionForge AI</h2><p class="muted">Use the shared login page. The website will identify whether your account is a regular user or the authorized owner.</p><div class="actions"><button id="github-login" class="primary">Open shared login page</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Owner access requires the authorized GitHub account.</p></section>
 <section id="editor-card" class="card hidden"><div class="row"><h2>Homepage content</h2><button id="sign-out">Sign out</button></div><p id="signed-in" class="muted small"></p>
 <label for="label">Header label</label><input id="label" maxlength="100">
 <label for="tagline">Intro line</label><textarea id="tagline" maxlength="240"></textarea>
@@ -18,13 +18,19 @@
 <footer>Keep your Supabase service-role key private. This dashboard uses only the publishable browser key.</footer></main>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, OWNER_EMAIL } from "./supabase-config.js";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, OWNER_EMAIL, OWNER_GITHUB_USERNAME } from "./supabase-config.js";
 const $ = id => document.getElementById(id);
 const configured = SUPABASE_URL.startsWith("https://") && SUPABASE_PUBLISHABLE_KEY.length > 20;
 let supabase = null, activeUser = null;
 const setNotice = (id, text, kind = "") => { const el = $(id); el.textContent = text; el.className = "notice" + (kind ? " " + kind : ""); };
 const show = (id, yes) => $(id).classList.toggle("hidden", !yes);
-const checkOwner = user => !!user && (user.email || "").toLowerCase() === OWNER_EMAIL.toLowerCase();
+const checkOwner = user => !!user &&
+  (user.email || "").toLowerCase() === OWNER_EMAIL.toLowerCase() &&
+  (user.identities || []).some(identity => {
+    const data = identity.identity_data || {};
+    return identity.provider === "github" &&
+      String(data.user_name || data.login || "").toLowerCase() === OWNER_GITHUB_USERNAME.toLowerCase();
+  });
 async function loadContent() {
   setNotice("editor-status", "Loading saved content…");
   const { data, error } = await supabase.from("site_content").select("label, tagline, description, footer_text, published").eq("id", "home").maybeSingle();
@@ -46,13 +52,8 @@ async function refreshSession() {
   activeUser = user; show("login-card", !user); show("editor-card", !!user);
   if (user) { $("signed-in").textContent = "Signed in as " + user.email; await loadContent(); }
 }
-$("github-login").addEventListener("click", async () => {
-  $("github-login").disabled = true; setNotice("login-status", "Redirecting to GitHub…");
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "github",
-    options: { redirectTo: new URL("./admin.html", location.href).href, scopes: "read:user user:email" }
-  });
-  if (error) { $("github-login").disabled = false; setNotice("login-status", "Could not start GitHub sign-in: " + error.message + ". Check the Supabase GitHub provider setup.", "error"); }
+$("github-login").addEventListener("click", () => {
+  location.href = "./login.html?next=admin";
 });
 $("save").addEventListener("click", async () => {
   if (!checkOwner(activeUser)) { setNotice("editor-status", "Owner sign-in required.", "error"); return; }

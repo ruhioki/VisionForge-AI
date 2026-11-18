@@ -89,7 +89,7 @@ def test_civic_scan_desk_supports_local_document_workflow() -> None:
     for feature in (
         'id="file"', 'id="camera"', 'id="capture"', 'id="ocr"',
         'Tesseract.createWorker', 'BarcodeDetector', 'id="text"',
-        'id="download-text"', 'class="checks"', 'Nothing is submitted to a government database',
+        'id="download-text"', 'id="language"', 'value="tam"', 'value="hin"', 'class="checks"', 'Nothing is submitted to a government database',
         'does not verify whether a document is genuine',
     ):
         assert feature in scanner

@@ -42,7 +42,7 @@ Classical image processing works with the base install. An optional ONNX Runtime
 
 ## Owner dashboard
 
-A Supabase-backed owner dashboard is included for editing homepage text. It uses passwordless email sign-in and database-side Row Level Security; only the verified owner email configured in the SQL policy can write. Setup instructions and the required external configuration are in [docs/supabase-admin-setup.md](docs/supabase-admin-setup.md). The dashboard is at `web-app/admin.html` after Pages deploys.
+A Supabase-backed owner control center lets the authorized GitHub owner edit homepage text, publish visitor announcements, and enable maintenance mode. Supabase Auth and database Row Level Security enforce owner-only writes. Setup instructions and the required external configuration are in [docs/supabase-admin-setup.md](docs/supabase-admin-setup.md). The dashboard is at `web-app/admin.html` after Pages deploys.
 
 ## Mobile browser app
 

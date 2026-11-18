@@ -28,7 +28,7 @@ Deno.serve(async(req:Request)=>{
  ].join("\n");
  const payload:Record<string,unknown>={model:Deno.env.get("OPENAI_MODEL")||"gpt-4.1-mini",instructions:instructions+(mode==="dev"?"\nDeveloper mode: prioritize debugging, accessibility, secure defaults, minimal fixes, and tests.":mode==="research"?"\nResearch mode: use web search, prioritize official sources, and provide concise source links.":""),input:message,max_output_tokens:1200,store:false};
  if(mode==="research")payload.tools=[{type:"web_search"}];
- let response:Response;try{response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{Authorization:"Bearer "+key,"Content-Type":"application/json"},body:JSON.stringify(payload)})}catch{return reply({error:"AI service could not be reached. Try again shortly."},502)}
+ let response:Response;try{response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{Authorization:"Bearer "+key,"Content-Type":"application/json"},body:JSON.stringify(payload)})}catch{return reply({error:"AI service could not be reached. Try again shortly."},502,origin)}
  const result=await response.json().catch(()=>({}));
  if(!response.ok)return reply({error:response.status===429?"AI usage limit reached. Try again later.":"AI service returned an error. Check server configuration and usage limits."},response.status===429?429:502,origin);
  const texts:string[]=[],sources:{title:string;url:string}[]=[];

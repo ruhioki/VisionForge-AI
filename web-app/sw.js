@@ -1,4 +1,4 @@
-// Cache v12 refreshes document conversion and assistant error-handling assets.
+// Cache v12 replaces legacy visionforge-image-lab-v9 and refreshes document conversion and assistant error-handling assets.
 const CACHE = "visionforge-image-lab-v12";
 const ASSETS = ["./", "./index.html", "./document-studio.html", "./civic-scan.html", "./security.html", "./assistant.html", "./admin.html", "./login.html", "./site-content.js", "./supabase-config.js", "./manifest.webmanifest", "./icon.svg", "./theme.css", "./theme.js"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))));

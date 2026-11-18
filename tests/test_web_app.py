@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v5" in worker
+    assert "visionforge-image-lab-v6" in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
@@ -62,3 +62,21 @@ def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
     assert "using (published = true)" in schema
     assert "add column if not exists" in schema
     assert "nullif(lower(i.identity_data" in schema
+
+
+
+def test_owner_control_center_exposes_only_database_backed_site_controls() -> None:
+    admin = (WEB / "admin.html").read_text(encoding="utf-8")
+    public_content = (WEB / "site-content.js").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    schema = (ROOT / "supabase" / "owner-dashboard.sql").read_text(encoding="utf-8").lower()
+    for control in ("announcement-text", "announcement-enabled", "maintenance-mode",
+                    "maintenance-message", "Save all controls", "checkOwner(activeUser)"):
+        assert control in admin
+    for column in ("announcement_text", "announcement_enabled", "maintenance_mode", "maintenance_message"):
+        assert column in schema
+        assert column in public_content
+    assert 'id="site-announcement"' in homepage
+    assert 'id="maintenance-state"' in homepage
+    assert 'workspace.hidden = true' in public_content
+    assert "create policy \"authorized owner manages site content\"" in schema

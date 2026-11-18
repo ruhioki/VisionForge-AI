@@ -10,11 +10,14 @@ The app supports Supabase Auth phone-factor enrollment and a second-factor chall
 4. Review OTP expiry, SMS rate limits, abuse protection, and any provider restrictions before production use.
 5. In **Authentication → URL Configuration**, allow the deployed app URL, including `https://ruhioki.github.io/VisionForge-AI/security.html` and `https://ruhioki.github.io/VisionForge-AI/login.html`.
 6. Deploy the current branch/PR, sign in to the app, open **Account security · Phone 2FA**, enter a phone number in international format (for example `+91...`), and verify the SMS code.
-7. Sign out and sign in again. The login page should ask for the second factor before routing to the app.
+7. Run the updated `supabase/owner-dashboard.sql` in the Supabase SQL Editor after merging. This refreshes the owner-write policy to require AAL2.
+8. Sign out and sign in again. The login page should ask for the second factor before routing to the app.
+9. Verify that owner dashboard saves only work after MFA has been verified; database RLS rejects owner writes from AAL1 sessions.
 
 ## Important behavior and limitations
 
-- Phone MFA is opt-in until a user enrolls and verifies a factor. Once enrolled, login checks Supabase's authenticator assurance level and requires a second-factor challenge.
+- Phone MFA is opt-in for regular app access until a user enrolls and verifies a factor. Once enrolled, login checks Supabase's authenticator assurance level and requires a second-factor challenge.
+- The owner dashboard database policy additionally requires `auth.jwt() ->> 'aal' = 'aal2'` for privileged content writes. The owner must enroll and verify a second factor before saving dashboard changes.
 - If a verified phone factor is enrolled, SMS is used for the challenge. If a TOTP authenticator factor is enrolled instead, the login flow accepts its current code.
 - SMS is weaker than passkeys or authenticator-app TOTP because phone numbers can be ported or SIM-swapped. For government or high-impact deployments, prefer passkeys/WebAuthn or TOTP where feasible and establish an approved account-recovery process.
 - This is a browser client. The database and Supabase Auth enforce access; never trust a client-side role flag alone.

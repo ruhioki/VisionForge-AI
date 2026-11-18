@@ -1,44 +1,62 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0b14"><meta name="robots" content="noindex,nofollow">
-<title>VisionForge AI · Owner dashboard</title>
+<title>VisionForge AI · Owner control center</title>
 <style>
-:root{color-scheme:dark;--line:#29283d;--text:#f4f2ff;--muted:#a6a3bd;--purple:#a78bfa}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#21183a 0,#0b0b14 60%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;padding:24px 14px}.shell{max-width:760px;margin:auto}.top,.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top{margin-bottom:18px}.brand{font-size:1.15rem;font-weight:800}.brand span{color:var(--purple)}a{color:#c4b5fd}.card{background:rgba(20,20,33,.95);border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 14px 40px #0002}h1{font-size:clamp(1.5rem,4vw,2rem);margin:0 0 8px}h2{font-size:1rem;margin:0 0 14px}.muted{color:var(--muted)}.notice{padding:12px;border-radius:10px;background:#0d0d17;color:var(--muted);overflow-wrap:anywhere}.notice.error{color:#fecaca;border:1px solid #7f1d1d}.notice.ok{color:#d9f99d;border:1px solid #365314}label{display:block;font-weight:650;margin:15px 0 6px}input,textarea{width:100%;border:1px solid #38334e;border-radius:10px;padding:12px;background:#0e0d19;color:var(--text);font:inherit}textarea{min-height:94px;resize:vertical}button{border:1px solid #3a3550;border-radius:11px;background:#201d32;color:var(--text);padding:11px 14px;font:inherit;cursor:pointer;min-height:42px}button.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:0;font-weight:750}button:disabled{opacity:.5;cursor:not-allowed}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.small,footer{font-size:.84rem}.hidden{display:none!important}input[type=checkbox]{width:auto;accent-color:var(--purple)}.check{display:flex;align-items:center;gap:9px;font-weight:500}.check label{margin:0}.safe{font-size:.84rem;color:#c7e9a2}footer{color:var(--muted);padding:12px 2px}@media(max-width:480px){.card{padding:15px}body{padding:15px 10px}}
+:root{color-scheme:dark;--line:#29283d;--text:#f4f2ff;--muted:#a6a3bd;--purple:#a78bfa;--green:#a3e635}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#21183a 0,#0b0b14 60%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;padding:24px 14px}.shell{max-width:900px;margin:auto}.top,.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top{margin-bottom:18px}.brand{font-size:1.15rem;font-weight:800}.brand span{color:var(--purple)}a{color:#c4b5fd}.card{background:rgba(20,20,33,.95);border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 14px 40px #0002}h1{font-size:clamp(1.5rem,4vw,2rem);margin:0 0 8px}h2{font-size:1rem;margin:0 0 14px}.muted{color:var(--muted)}.notice{padding:12px;border-radius:10px;background:#0d0d17;color:var(--muted);overflow-wrap:anywhere}.notice.error{color:#fecaca;border:1px solid #7f1d1d}.notice.ok{color:#d9f99d;border:1px solid #365314}.notice.warn{color:#fde68a;border:1px solid #854d0e}label{display:block;font-weight:650;margin:15px 0 6px}input,textarea{width:100%;border:1px solid #38334e;border-radius:10px;padding:12px;background:#0e0d19;color:var(--text);font:inherit}textarea{min-height:94px;resize:vertical}button{border:1px solid #3a3550;border-radius:11px;background:#201d32;color:var(--text);padding:11px 14px;font:inherit;cursor:pointer;min-height:42px}button.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:0;font-weight:750}button:disabled{opacity:.5;cursor:not-allowed}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.small,footer{font-size:.84rem}.hidden{display:none!important}input[type=checkbox]{width:auto;accent-color:var(--purple)}.check{display:flex;align-items:center;gap:9px;font-weight:500}.check label{margin:0}.safe{font-size:.84rem;color:#c7e9a2}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{padding:14px;border:1px solid var(--line);border-radius:12px;background:#0d0d17;min-width:0}.metric strong{display:block;font-size:1rem;overflow-wrap:anywhere}.metric span{color:var(--muted);font-size:.82rem}footer{color:var(--muted);padding:12px 2px}@media(max-width:560px){.card{padding:15px}body{padding:15px 10px}.grid{grid-template-columns:1fr}}
 </style></head><body><main class="shell">
-<div class="top"><div class="brand">VisionForge <span>AI</span> / Owner</div><a href="./index.html">← Back to Image Lab</a></div>
-<section class="card"><h1>Owner dashboard</h1><p class="muted">Edit public homepage text. Access is restricted to the configured owner account.</p><div id="setup" class="notice">Checking Supabase configuration…</div></section>
-<section id="login-card" class="card hidden"><h2>Sign in to VisionForge AI</h2><p class="muted">Use the shared login page. The website will identify whether your account is a regular user or the authorized owner.</p><div class="actions"><button id="github-login" class="primary">Open shared login page</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Owner access requires the authorized GitHub account.</p></section>
-<section id="editor-card" class="card hidden"><div class="row"><h2>Homepage content</h2><button id="sign-out">Sign out</button></div><p id="signed-in" class="muted small"></p>
+<div class="top"><div class="brand">VisionForge <span>AI</span> / Owner control center</div><a href="./index.html">← Back to Image Lab</a></div>
+<section class="card"><h1>Owner control center</h1><p class="muted">Manage public homepage text, visitor announcements, and maintenance status. Database Row Level Security remains the final permission check.</p><div id="setup" class="notice">Checking Supabase configuration…</div></section>
+<section id="login-card" class="card hidden"><h2>Sign in to VisionForge AI</h2><p class="muted">Use the shared login page. Owner controls are available only to the authorized GitHub account.</p><div class="actions"><button id="github-login" class="primary">Open shared login page</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Owner access requires the authorized GitHub account.</p></section>
+<section id="editor-card" class="hidden">
+<div class="card"><div class="row"><h2>Control overview</h2><button id="sign-out">Sign out</button></div><p id="signed-in" class="muted small"></p><div class="grid"><div class="metric"><strong id="publish-state">Checking…</strong><span>Homepage visibility</span></div><div class="metric"><strong id="announcement-state">Checking…</strong><span>Visitor announcement</span></div><div class="metric"><strong id="maintenance-state">Checking…</strong><span>Maintenance mode</span></div></div><p id="last-updated" class="muted small">Last saved: not loaded</p></div>
+<div class="card"><h2>Homepage content</h2>
 <label for="label">Header label</label><input id="label" maxlength="100">
 <label for="tagline">Intro line</label><textarea id="tagline" maxlength="240"></textarea>
 <label for="description">Short description (SEO)</label><textarea id="description" maxlength="300"></textarea>
 <label for="footer-text">Footer text</label><input id="footer-text" maxlength="180">
-<label class="check"><input id="published" type="checkbox" checked> Publish these changes to visitors</label>
-<div class="actions"><button id="save" class="primary">Save changes</button><button id="reload">Reload saved content</button></div><p id="editor-status" class="notice" role="status" aria-live="polite">Loading saved content…</p><p class="safe">Database Row Level Security protects writes in addition to the page’s owner check.</p></section>
-<footer>Keep your Supabase service-role key private. This dashboard uses only the publishable browser key.</footer></main>
+<label class="check"><input id="published" type="checkbox" checked> Publish database-managed homepage text</label>
+</div>
+<div class="card"><h2>Visitor announcement</h2><p class="muted small">Show a short notice at the top of the public Image Lab. Keep it helpful and avoid posting private information.</p>
+<label for="announcement-text">Announcement message</label><textarea id="announcement-text" maxlength="240" placeholder="New features are available…"></textarea>
+<label class="check"><input id="announcement-enabled" type="checkbox"> Show announcement to visitors</label>
+</div>
+<div class="card"><h2>App availability</h2><p class="muted small">Maintenance mode displays your message and temporarily hides the public image workspace. The owner dashboard stays available.</p>
+<label for="maintenance-message">Maintenance message</label><textarea id="maintenance-message" maxlength="240"></textarea>
+<label class="check"><input id="maintenance-mode" type="checkbox"> Enable maintenance mode for visitors</label>
+<p class="notice warn">Use maintenance mode only when needed. Visitors can still open the login page and owner dashboard.</p>
+</div>
+<div class="card"><div class="actions"><button id="save" class="primary">Save all controls</button><button id="reload">Discard local edits / reload saved settings</button><button id="preview">Open public app</button></div><p id="editor-status" class="notice" role="status" aria-live="polite">Loading saved settings…</p><p class="safe">Security: this page uses the public Supabase key only. Owner writes are enforced by database RLS, not just by this interface.</p></div>
+</section>
+<footer>Never place a Supabase service-role key or GitHub OAuth client secret in this repository or browser code.</footer></main>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, OWNER_EMAIL, OWNER_GITHUB_USERNAME } from "./supabase-config.js";
 const $ = id => document.getElementById(id);
 const configured = SUPABASE_URL.startsWith("https://") && SUPABASE_PUBLISHABLE_KEY.length > 20;
-let supabase = null, activeUser = null;
+let supabase = null, activeUser = null, busy = false;
 const setNotice = (id, text, kind = "") => { const el = $(id); el.textContent = text; el.className = "notice" + (kind ? " " + kind : ""); };
 const show = (id, yes) => $(id).classList.toggle("hidden", !yes);
-const checkOwner = user => !!user &&
-  (user.email || "").toLowerCase() === OWNER_EMAIL.toLowerCase() &&
-  (user.identities || []).some(identity => {
-    const data = identity.identity_data || {};
-    return identity.provider === "github" &&
-      String(data.user_name || data.login || "").toLowerCase() === OWNER_GITHUB_USERNAME.toLowerCase();
-  });
+const checkOwner = user => !!user && (user.email || "").toLowerCase() === OWNER_EMAIL.toLowerCase() &&
+  (user.identities || []).some(identity => { const data = identity.identity_data || {}; return identity.provider === "github" && String(data.user_name || data.login || "").toLowerCase() === OWNER_GITHUB_USERNAME.toLowerCase(); });
+function renderOverview(data) {
+  $("publish-state").textContent = data.published ? "Published" : "Hidden";
+  $("announcement-state").textContent = data.announcement_enabled ? "On" : "Off";
+  $("maintenance-state").textContent = data.maintenance_mode ? "Enabled" : "Off";
+  $("last-updated").textContent = "Last saved: " + (data.updated_at ? new Date(data.updated_at).toLocaleString() : "not recorded");
+}
 async function loadContent() {
-  setNotice("editor-status", "Loading saved content…");
-  const { data, error } = await supabase.from("site_content").select("label, tagline, description, footer_text, published").eq("id", "home").maybeSingle();
-  if (error) { setNotice("editor-status", "Could not load content: " + error.message + ". Confirm the SQL setup was run.", "error"); return; }
-  if (!data) { setNotice("editor-status", "No content row found. Run supabase/owner-dashboard.sql in Supabase SQL Editor.", "error"); return; }
-  $("label").value = data.label; $("tagline").value = data.tagline; $("description").value = data.description;
-  $("footer-text").value = data.footer_text; $("published").checked = data.published;
-  setNotice("editor-status", "Saved content loaded.", "ok");
+  setNotice("editor-status", "Loading saved settings…");
+  const { data, error } = await supabase.from("site_content").select("label,tagline,description,footer_text,published,announcement_text,announcement_enabled,maintenance_mode,maintenance_message,updated_at,updated_by").eq("id","home").maybeSingle();
+  if (error) { setNotice("editor-status", "Could not load settings: " + error.message + ". Confirm the latest SQL setup was run.", "error"); return; }
+  if (!data) { setNotice("editor-status", "No settings row found. Run supabase/owner-dashboard.sql in Supabase SQL Editor.", "error"); return; }
+  $("label").value = data.label || ""; $("tagline").value = data.tagline || ""; $("description").value = data.description || "";
+  $("footer-text").value = data.footer_text || ""; $("published").checked = !!data.published;
+  $("announcement-text").value = data.announcement_text || ""; $("announcement-enabled").checked = !!data.announcement_enabled;
+  $("maintenance-mode").checked = !!data.maintenance_mode;
+  $("maintenance-message").value = data.maintenance_message || "VisionForge AI is temporarily undergoing maintenance. Please check back soon.";
+  renderOverview(data);
+  setNotice("editor-status", "Saved settings loaded. Your unsaved edits will be replaced if you reload.", "ok");
 }
 async function refreshSession() {
   if (!supabase) return;
@@ -47,31 +65,43 @@ async function refreshSession() {
   const user = data.session?.user || null;
   if (user && !checkOwner(user)) {
     await supabase.auth.signOut(); activeUser = null; show("login-card", true); show("editor-card", false);
-    setNotice("login-status", "Access denied. This dashboard is reserved for the configured owner email.", "error"); return;
+    setNotice("login-status", "Access denied. This dashboard is reserved for the authorized owner GitHub account.", "error"); return;
   }
   activeUser = user; show("login-card", !user); show("editor-card", !!user);
-  if (user) { $("signed-in").textContent = "Signed in as " + user.email; await loadContent(); }
+  if (user) { $("signed-in").textContent = "Authorized owner session: " + (user.user_metadata?.user_name || user.email); await loadContent(); }
 }
-$("github-login").addEventListener("click", () => {
-  location.href = "./login.html?next=admin";
-});
+$("github-login").addEventListener("click", () => { location.href = "./login.html?next=admin"; });
 $("save").addEventListener("click", async () => {
+  if (busy) return;
   if (!checkOwner(activeUser)) { setNotice("editor-status", "Owner sign-in required.", "error"); return; }
-  const payload = { id:"home", label:$("label").value.trim(), tagline:$("tagline").value.trim(), description:$("description").value.trim(), footer_text:$("footer-text").value.trim(), published:$("published").checked, updated_at:new Date().toISOString(), updated_by:activeUser.id };
-  if (!payload.label || !payload.tagline || !payload.description || !payload.footer_text) { setNotice("editor-status", "Please fill in all text fields.", "error"); return; }
-  $("save").disabled = true;
-  const { error } = await supabase.from("site_content").upsert(payload, { onConflict:"id" });
-  $("save").disabled = false;
-  setNotice("editor-status", error ? "Save blocked or failed: " + error.message + ". Check the owner RLS policy." : "Changes saved. Published text appears on the homepage after refresh.", error ? "error" : "ok");
+  const payload = {
+    id:"home", label:$("label").value.trim(), tagline:$("tagline").value.trim(), description:$("description").value.trim(),
+    footer_text:$("footer-text").value.trim(), published:$("published").checked,
+    announcement_text:$("announcement-text").value.trim(), announcement_enabled:$("announcement-enabled").checked,
+    maintenance_mode:$("maintenance-mode").checked, maintenance_message:$("maintenance-message").value.trim(),
+    updated_at:new Date().toISOString(), updated_by:activeUser.id
+  };
+  if (!payload.label || !payload.tagline || !payload.description || !payload.footer_text || !payload.maintenance_message) {
+    setNotice("editor-status", "Fill in all required homepage fields and the maintenance message.", "error"); return;
+  }
+  if (payload.announcement_enabled && !payload.announcement_text) { setNotice("editor-status", "Add an announcement message or turn the announcement off.", "error"); return; }
+  busy = true; $("save").disabled = true; setNotice("editor-status", "Saving owner controls…");
+  try {
+    const { error } = await supabase.from("site_content").upsert(payload, { onConflict:"id" });
+    if (error) throw error;
+    renderOverview(payload);
+    $("last-updated").textContent = "Last saved: " + new Date(payload.updated_at).toLocaleString();
+    setNotice("editor-status", "Saved successfully. Refresh the public app to see the changes.", "ok");
+  } catch (error) { setNotice("editor-status", "Save blocked or failed: " + (error.message || "Unknown error") + ". Check the latest SQL/RLS setup.", "error"); }
+  finally { busy = false; $("save").disabled = false; }
 });
 $("reload").addEventListener("click", loadContent);
+$("preview").addEventListener("click", () => window.open("./index.html", "_blank", "noopener,noreferrer"));
 $("sign-out").addEventListener("click", async () => { await supabase.auth.signOut(); activeUser = null; show("editor-card", false); show("login-card", true); setNotice("login-status", "Signed out."); });
 if (configured) {
   supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, { auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true} });
-  $("setup").textContent = "Supabase configured. Database Row Level Security also enforces owner-only writes.";
+  $("setup").textContent = "Supabase configured. Database Row Level Security enforces owner-only writes.";
   supabase.auth.onAuthStateChange(() => { setTimeout(() => refreshSession(), 0); });
   await refreshSession();
-} else {
-  setNotice("setup", "Setup required: set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in web-app/supabase-config.js, then run the SQL setup. Never put a service-role key in browser code.", "error");
-}
+} else setNotice("setup", "Setup required: set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in web-app/supabase-config.js, then run the SQL setup. Never put a service-role key in browser code.", "error");
 </script></body></html>

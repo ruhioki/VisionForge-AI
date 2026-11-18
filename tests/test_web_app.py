@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v3" in worker
+    assert "visionforge-image-lab-v4" in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:

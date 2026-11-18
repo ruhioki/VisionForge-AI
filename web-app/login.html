@@ -9,14 +9,14 @@
 <style>
 :root{color-scheme:dark;--bg:#0b0b14;--panel:#141421;--line:#29283d;--text:#f4f2ff;--muted:#a6a3bd;--purple:#a78bfa;--green:#a3e635}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px 14px;display:grid;place-items:center;background:radial-gradient(ellipse at top,#21183a 0,#0b0b14 58%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-.shell{width:min(100%,460px)}.brand{display:flex;align-items:center;gap:12px;margin:0 0 20px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--purple),#5b21b6);display:grid;place-items:center;font-size:25px;font-weight:900}.brand h1{font-size:1.35rem;margin:0;letter-spacing:-.04em}.brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.shell{width:min(100%,460px)}.brand{display:flex;align-items:center;gap:12px;margin:0 0 20px}.logo-img{width:46px;height:46px;border-radius:14px;object-fit:cover;flex:0 0 auto;box-shadow:0 6px 22px #8b5cf644}.brand h1{font-size:1.35rem;margin:0;letter-spacing:-.04em}.brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
 .card{background:rgba(20,20,33,.96);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 18px 60px #0003}.card h2{margin:0 0 5px;font-size:1.35rem}.muted{color:var(--muted)}.sub{margin:0 0 20px;color:var(--muted);font-size:.9rem}
 label{display:block;margin:13px 0 6px;font-weight:650;font-size:.9rem}input{width:100%;padding:12px;border:1px solid #38334e;border-radius:11px;background:#0e0d19;color:var(--text);font:inherit}input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-button,.button{width:100%;min-height:44px;padding:11px 14px;border-radius:11px;border:1px solid #3a3550;background:#201d32;color:var(--text);font:inherit;font-weight:650;cursor:pointer;text-align:center;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:9px}button:disabled{opacity:.55;cursor:wait}.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:0}.github{background:#f4f2ff;color:#171321;border:0}.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.8rem;margin:16px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}.actions{display:grid;gap:10px;margin-top:17px}.switch{display:flex;gap:8px;margin:18px 0 14px}.switch button{width:50%;min-height:38px;padding:8px;background:transparent;color:var(--muted)}.switch button[aria-pressed="true"]{background:#282044;color:#fff;border-color:#6d4ab4}.notice{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#0d0d17;color:var(--muted);font-size:.86rem;overflow-wrap:anywhere;margin-top:14px}.notice.error{color:#fecaca;border-color:#7f1d1d}.notice.ok{color:#d9f99d;border-color:#365314}.small{font-size:.82rem}.fine{margin:15px 0 0;color:var(--muted);font-size:.8rem}.fine a,.back{color:#c4b5fd}.hidden{display:none!important}.back{display:block;text-align:center;margin-top:17px;font-size:.9rem}.security{display:flex;gap:8px;align-items:flex-start;margin-top:15px;color:#c7e9a2;font-size:.82rem}
+button,.button{width:100%;min-height:44px;padding:11px 14px;border-radius:11px;border:1px solid #3a3550;background:#201d32;color:var(--text);font:inherit;font-weight:650;cursor:pointer;text-align:center;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:9px}button:disabled{opacity:.55;cursor:wait}.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:0}.github{background:#f4f2ff;color:#171321;border:0}.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.8rem;margin:16px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}.actions{display:grid;gap:10px;margin-top:17px}.switch{display:flex;gap:8px;margin:18px 0 14px}.switch button{width:50%;min-height:38px;padding:8px;background:transparent;color:var(--muted)}.switch button[aria-pressed="true"]{background:#282044;color:#fff;border-color:#6d4ab4}.notice{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#0d0d17;color:var(--muted);font-size:.86rem;overflow-wrap:anywhere;margin-top:14px}.notice.error{color:#fecaca;border-color:#7f1d1d}.notice.ok{color:#d9f99d;border-color:#365314}.small{font-size:.82rem}.fine{margin:15px 0 0;color:var(--muted);font-size:.8rem}.fine a,.back{color:#c4b5fd}.hidden{display:none!important}.back{display:block;text-align:center;margin-top:17px;font-size:.9rem}.password-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.password-row input{min-width:0}.password-toggle{width:auto;min-height:44px;padding:9px 12px;font-size:.85rem}.secondary-action{width:auto;min-height:36px;padding:5px 0;border:0;background:transparent;color:#c4b5fd;font-size:.86rem;text-align:left}.security{display:flex;gap:8px;align-items:flex-start;margin-top:15px;color:#c7e9a2;font-size:.82rem}
 </style>
 </head>
 <body><main class="shell">
-<div class="brand"><div class="logo" aria-hidden="true">V</div><div><h1>VisionForge <span style="color:var(--purple)">AI</span></h1><p>One account · Your own access level</p></div></div>
+<div class="brand"><img class="logo-img" src="./icon.svg" alt="VisionForge AI logo" width="46" height="46"><div><h1>VisionForge <span style="color:var(--purple)">AI</span></h1><p>One account · Your own access level</p></div></div>
 <section class="card">
 <h2 id="heading">Welcome back</h2><p class="sub" id="intro">Sign in to continue to VisionForge AI.</p>
 <div id="login-controls">
@@ -24,10 +24,11 @@ button,.button{width:100%;min-height:44px;padding:11px 14px;border-radius:11px;b
 <form id="email-form">
 <div id="name-wrap" class="hidden"><label for="display-name">Display name</label><input id="display-name" name="display-name" autocomplete="name" maxlength="80" placeholder="Your name"></div>
 <label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
-<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters">
+<label for="password">Password</label><div class="password-row"><input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters"><button class="password-toggle" id="password-toggle" type="button" aria-controls="password" aria-pressed="false">Show</button></div>
 <div class="actions"><button class="primary" id="email-submit" type="submit">Sign in with email</button></div>
 </form>
-<div class="divider">or continue with</div>
+<div id="recovery-wrap"><button class="secondary-action" id="forgot-password" type="button">Forgot password?</button></div>
+<div class="divider" id="oauth-divider">or continue with</div>
 <button class="github" id="github-login" type="button"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .1.76 2.28 3.3 1.74.1-.73.4-1.22.7-1.5-2.5-.29-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.29-.5-1.43.11-2.98 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.69.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.63 5.27-5.14 5.55.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>Continue with GitHub</button>
 </div>
 <section id="mfa-panel" class="hidden" aria-labelledby="mfa-heading"><h2 id="mfa-heading">Verify it’s you</h2><p id="mfa-intro" class="muted">Enter the code to complete sign-in.</p><label for="mfa-code">One-time code</label><input id="mfa-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Enter code"><div class="actions"><button id="mfa-verify" class="primary" type="button">Verify and continue</button><button id="mfa-resend" type="button">Send another code</button></div></section>
@@ -57,10 +58,19 @@ function setMode(next) {
   $("signin-tab").setAttribute("aria-pressed", String(mode === "signin"));
   $("signup-tab").setAttribute("aria-pressed", String(mode === "signup"));
   $("name-wrap").classList.toggle("hidden", mode !== "signup");
-  $("heading").textContent = mode === "signup" ? "Create your account" : "Welcome back";
-  $("intro").textContent = mode === "signup" ? "Create a regular VisionForge AI account. Admin access is granted separately." : "Sign in to continue to VisionForge AI.";
-  $("email-submit").textContent = mode === "signup" ? "Create account" : "Sign in with email";
-  $("password").autocomplete = mode === "signup" ? "new-password" : "current-password";
+  $("heading").textContent = mode === "signup" ? "Create your account" : mode === "reset" ? "Choose a new password" : "Welcome back";
+  $("intro").textContent = mode === "signup" ? "Create a regular VisionForge AI account. Admin access is granted separately." : mode === "reset" ? "Choose a new password for your VisionForge AI account." : "Sign in to continue to VisionForge AI.";
+  $("email-submit").textContent = mode === "signup" ? "Create account" : mode === "reset" ? "Update password" : "Sign in with email";
+  $("password").autocomplete = mode === "signup" || mode === "reset" ? "new-password" : "current-password";
+  $("recovery-wrap").classList.toggle("hidden", mode !== "signin");
+  $("signin-tab").classList.toggle("hidden", mode === "reset");
+  $("signup-tab").classList.toggle("hidden", mode === "reset");
+  $("github-login").classList.toggle("hidden", mode === "reset");
+  $("oauth-divider").classList.toggle("hidden", mode === "reset");
+  $("email").readOnly = mode === "reset";
+  $("password-toggle").setAttribute("aria-pressed", "false");
+  $("password-toggle").textContent = "Show";
+  $("password").type = "password";
 }
 let pendingFactorId = null, pendingChallengeId = null, pendingFactorType = null, mfaBusy = false, challengeInProgress = false, pendingUserId = null;
 async function startMfaChallenge() {
@@ -81,7 +91,7 @@ async function startMfaChallenge() {
   setStatus("Your account has two-step verification enabled. Complete the second step to continue.");
 }
 async function routeUser(user) {
-  if (!user) return;
+  if (!user || mode === "reset") return;
   if (challengeInProgress && pendingUserId === user.id) return;
   const {data: assurance, error: assuranceError} = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (!assuranceError && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
@@ -120,8 +130,28 @@ $("mfa-resend").addEventListener("click", async () => {
 async function checkExistingSession() {
   const {data, error} = await supabase.auth.getSession();
   if (error) { setStatus("Could not check your session. Please try again.", "error"); return; }
-  if (data.session?.user) await routeUser(data.session.user);
+  if (data.session?.user && mode === "reset") $("email").value = data.session.user.email || "";
+  else if (data.session?.user) await routeUser(data.session.user);
 }
+$("password-toggle").addEventListener("click", () => {
+  const visible = $("password").type === "password";
+  $("password").type = visible ? "text" : "password";
+  $("password-toggle").textContent = visible ? "Hide" : "Show";
+  $("password-toggle").setAttribute("aria-pressed", String(visible));
+});
+$("forgot-password").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  if (!email) { $("email").focus(); setStatus("Enter your email address first, then choose Forgot password again.", "error"); return; }
+  if (busy) return;
+  busy = true; $("forgot-password").disabled = true; setStatus("Requesting a password reset…");
+  try {
+    const redirectTo = new URL("./login.html?recovery=1", location.href).href;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) throw error;
+    setStatus("If an account exists for that email, a password-reset link has been sent. Check your inbox and spam folder.", "ok");
+  } catch (error) { setStatus(error.message || "Could not request a reset. Please try again later.", "error"); }
+  finally { busy = false; $("forgot-password").disabled = false; }
+});
 $("signin-tab").addEventListener("click", () => setMode("signin"));
 $("signup-tab").addEventListener("click", () => setMode("signup"));
 $("email-form").addEventListener("submit", async event => {
@@ -129,7 +159,12 @@ $("email-form").addEventListener("submit", async event => {
   const email = $("email").value.trim(), password = $("password").value;
   busy = true; $("email-submit").disabled = true; setStatus(mode === "signup" ? "Creating your account…" : "Signing you in…");
   try {
-    if (mode === "signup") {
+    if (mode === "reset") {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      setStatus("Password updated successfully. You can now sign in with your new password.", "ok");
+      await supabase.auth.signOut(); setMode("signin"); $("password").value = ""; $("email").readOnly = false;
+    } else if (mode === "signup") {
       const displayName = $("display-name").value.trim();
       const {data, error} = await supabase.auth.signUp({email,password,options:{data:{display_name:displayName}}});
       if (error) throw error;
@@ -153,6 +188,9 @@ $("github-login").addEventListener("click", async () => {
   } catch(error) { setStatus(error.message || "Could not start GitHub sign-in. Check the Supabase GitHub provider settings.", "error"); busy = false; $("github-login").disabled = false; }
 });
 supabase.auth.onAuthStateChange((_event, session) => { if (session?.user) setTimeout(() => routeUser(session.user), 0); });
+const authParams = new URLSearchParams(location.search);
+if (authParams.get("recovery") === "1") { setMode("reset"); setStatus("Password recovery verified. Choose a new password below.", "ok"); }
+if (authParams.get("error_description")) setStatus("Sign-in could not be completed. Return to the login page and try again, or check the Supabase GitHub provider settings.", "error");
 if (!SUPABASE_URL.startsWith("https://") || SUPABASE_PUBLISHABLE_KEY.length < 20) setStatus("Supabase setup is incomplete. Check web-app/supabase-config.js.", "error");
 else await checkExistingSession();
 </script>

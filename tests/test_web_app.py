@@ -63,6 +63,8 @@ def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
     assert "using (published = true)" in schema
     assert "add column if not exists" in schema
     assert "nullif(lower(i.identity_data" in schema
+    assert "auth.jwt() ->> 'aal'" in schema
+    assert "= 'aal2'" in schema
 
 
 

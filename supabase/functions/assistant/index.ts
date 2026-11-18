@@ -3,9 +3,9 @@ const corsHeaders = {"Access-Control-Allow-Origin":"https://ruhioki.github.io","
 function reply(body: unknown,status=200,origin?:string|null){const headers={...corsHeaders,"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"};if(origin&&(/^https:\/\/ruhioki\.github\.io$/.test(origin)||/^http:\/\/localhost(:\d+)?$/.test(origin)))headers["Access-Control-Allow-Origin"]=origin;return new Response(JSON.stringify(body),{status,headers})}
 Deno.serve(async(req:Request)=>{
  const origin=req.headers.get("origin");
- if(origin&&origin!=="https://ruhioki.github.io"&&!/^http:\/\/localhost(:\d+)?$/.test(origin))return reply({error:"Origin not allowed."},403);
- if(req.method==="OPTIONS")return new Response("ok",{headers:corsHeaders});
- if(req.method!=="POST")return reply({error:"Use POST."},405);
+ if(origin&&origin!=="https://ruhioki.github.io"&&!/^http:\/\/localhost(:\d+)?$/.test(origin))return reply({error:"Origin not allowed."},403,origin);
+ if(req.method==="OPTIONS"){const headers={...corsHeaders};if(origin)headers["Access-Control-Allow-Origin"]=origin;return new Response("ok",{headers})}
+ if(req.method!=="POST")return reply({error:"Use POST."},405,origin);
  const token=(req.headers.get("authorization")||"").match(/^Bearer\s+(.+)$/i)?.[1];
  let projectKeys:Record<string,string>={};try{projectKeys=JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")||"{}")}catch{}\n const url=Deno.env.get("SUPABASE_URL"),pub=Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||projectKeys.default,key=Deno.env.get("OPENAI_API_KEY");
  if(!url||!pub)return reply({error:"Server authentication configuration is missing."},503,origin);

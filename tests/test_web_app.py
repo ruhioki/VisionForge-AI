@@ -39,7 +39,8 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v6" in worker
+    assert "visionforge-image-lab-v8" in worker
+    assert '"./civic-scan.html"' in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
@@ -62,6 +63,8 @@ def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
     assert "using (published = true)" in schema
     assert "add column if not exists" in schema
     assert "nullif(lower(i.identity_data" in schema
+    assert "auth.jwt() ->> 'aal'" in schema
+    assert "= 'aal2'" in schema
 
 
 
@@ -80,3 +83,31 @@ def test_owner_control_center_exposes_only_database_backed_site_controls() -> No
     assert 'id="maintenance-state"' in homepage
     assert 'workspace.hidden = true' in public_content
     assert "create policy \"authorized owner manages site content\"" in schema
+
+
+def test_civic_scan_desk_supports_local_document_workflow() -> None:
+    scanner = (WEB / "civic-scan.html").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    for feature in (
+        'id="file"', 'id="camera"', 'id="capture"', 'id="ocr"',
+        'Tesseract.createWorker', 'BarcodeDetector', 'id="text"',
+        'id="download-text"', 'id="language"', 'value="tam"', 'value="hin"', 'class="checks"', 'Nothing is submitted to a government database',
+        'does not verify whether a document is genuine',
+    ):
+        assert feature in scanner
+    assert 'href="./civic-scan.html"' in homepage
+
+
+def test_phone_mfa_has_enrollment_and_login_challenge() -> None:
+    security = (WEB / "security.html").read_text(encoding="utf-8")
+    login = (WEB / "login.html").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    worker = (WEB / "sw.js").read_text(encoding="utf-8")
+    assert 'auth.mfa.enroll({factorType:"phone",phone})' in security
+    assert 'auth.mfa.challenge({factorId})' in security
+    assert 'auth.mfa.verify({factorId,challengeId,code})' in security
+    assert 'getAuthenticatorAssuranceLevel()' in login
+    assert 'auth.mfa.verify({factorId:pendingFactorId,challengeId:pendingChallengeId,code})' in login
+    assert 'href="./security.html"' in homepage
+    assert '"./security.html"' in worker
+    assert "visionforge-image-lab-v8" in worker

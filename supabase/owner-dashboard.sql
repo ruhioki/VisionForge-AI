@@ -85,10 +85,12 @@ $$;
 create policy "Public reads published site content" on public.site_content
   for select to anon, authenticated using (published = true);
 
+-- Require a verified second factor for privileged owner writes.
+-- Existing owner sessions at AAL1 must enroll/verify MFA before saving admin changes.
 create policy "Authorized owner manages site content" on public.site_content
   for all to authenticated
-  using (public.is_site_admin())
-  with check (public.is_site_admin());
+  using (public.is_site_admin() and (select auth.jwt() ->> 'aal') = 'aal2')
+  with check (public.is_site_admin() and (select auth.jwt() ->> 'aal') = 'aal2');
 
 revoke all on public.site_content from public;
 grant select on public.site_content to anon, authenticated;

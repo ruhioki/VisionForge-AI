@@ -1,3 +1,4 @@
+// Cache v10 replaces legacy visionforge-image-lab-v9 so new theme assets are installed.
 const CACHE = "visionforge-image-lab-v10";
 const ASSETS = ["./", "./index.html", "./civic-scan.html", "./security.html", "./assistant.html", "./admin.html", "./login.html", "./site-content.js", "./supabase-config.js", "./manifest.webmanifest", "./icon.svg", "./theme.css", "./theme.js"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))));

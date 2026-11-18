@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v7" in worker
+    assert "visionforge-image-lab-v8" in worker
     assert '"./civic-scan.html"' in worker
 
 
@@ -94,3 +94,18 @@ def test_civic_scan_desk_supports_local_document_workflow() -> None:
     ):
         assert feature in scanner
     assert 'href="./civic-scan.html"' in homepage
+
+
+def test_phone_mfa_has_enrollment_and_login_challenge() -> None:
+    security = (WEB / "security.html").read_text(encoding="utf-8")
+    login = (WEB / "login.html").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    worker = (WEB / "sw.js").read_text(encoding="utf-8")
+    assert 'auth.mfa.enroll({factorType:"phone",phone})' in security
+    assert 'auth.mfa.challenge({factorId})' in security
+    assert 'auth.mfa.verify({factorId,challengeId,code})' in security
+    assert 'getAuthenticatorAssuranceLevel()' in login
+    assert 'auth.mfa.verify({factorId:pendingFactorId,challengeId:pendingChallengeId,code})' in login
+    assert 'href="./security.html"' in homepage
+    assert '"./security.html"' in worker
+    assert "visionforge-image-lab-v8" in worker

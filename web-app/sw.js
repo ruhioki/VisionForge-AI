@@ -1,5 +1,5 @@
-const CACHE = "visionforge-image-lab-v3";
-const ASSETS = ["./", "./index.html", "./admin.html", "./site-content.js", "./supabase-config.js", "./manifest.webmanifest", "./icon.svg"];
+const CACHE = "visionforge-image-lab-v4";
+const ASSETS = ["./", "./index.html", "./admin.html", "./login.html", "./site-content.js", "./supabase-config.js", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))));
 self.addEventListener("fetch", event => {

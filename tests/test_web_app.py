@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v8" in worker
+    assert "visionforge-image-lab-v9" in worker
     assert '"./civic-scan.html"' in worker
 
 
@@ -110,4 +110,32 @@ def test_phone_mfa_has_enrollment_and_login_challenge() -> None:
     assert 'auth.mfa.verify({factorId:pendingFactorId,challengeId:pendingChallengeId,code})' in login
     assert 'href="./security.html"' in homepage
     assert '"./security.html"' in worker
-    assert "visionforge-image-lab-v8" in worker
+    assert "visionforge-image-lab-v9" in worker
+
+
+def test_assistant_page_has_accessible_ai_and_local_developer_tools() -> None:
+    assistant = (WEB / "assistant.html").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    worker = (WEB / "sw.js").read_text(encoding="utf-8")
+    for feature in (
+        'id="chat-log"', 'aria-live="polite"', 'id="mode-research"',
+        'supabase.functions.invoke("assistant"', 'id="json-format"',
+        'id="url-encode"', 'id="base-encode"', 'id="diff-run"',
+        'id="time-convert"', 'id="uuid-generate"', 'href="./civic-scan.html"',
+        'Do not submit confidential code', 'high-impact decisions',
+    ):
+        assert feature in assistant
+    assert 'href="./assistant.html"' in homepage
+    assert '"./assistant.html"' in worker
+    assert "visionforge-image-lab-v9" in worker
+
+
+def test_assistant_edge_function_authenticates_and_keeps_ai_key_server_side() -> None:
+    function = (ROOT / "supabase" / "functions" / "assistant" / "index.ts").read_text(encoding="utf-8")
+    docs = (ROOT / "docs" / "assistant-setup.md").read_text(encoding="utf-8")
+    assert 'Deno.env.get("OPENAI_API_KEY")' in function
+    assert '"/auth/v1/user"' in function
+    assert 'type:"web_search"' in function
+    assert "store:false" in function
+    assert "supabase functions deploy assistant" in docs
+    assert "never put it in" in docs

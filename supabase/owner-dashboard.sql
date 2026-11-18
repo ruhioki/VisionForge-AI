@@ -13,6 +13,16 @@ create table if not exists public.site_content (
   updated_by uuid references auth.users(id)
 );
 
+-- Keep this script compatible with site_content tables created by earlier versions.
+alter table public.site_content
+  add column if not exists label text not null default 'Image Lab · Browser Edition',
+  add column if not exists tagline text not null default 'Explore classic computer-vision filters on your phone or laptop.',
+  add column if not exists description text not null default 'Explore classic computer-vision filters on your device.',
+  add column if not exists footer_text text not null default 'VisionForge AI · Open-source learning project',
+  add column if not exists published boolean not null default true,
+  add column if not exists updated_at timestamptz not null default now(),
+  add column if not exists updated_by uuid references auth.users(id);
+
 -- This table is the actual admin allowlist. Regular users cannot read or modify it.
 create table if not exists public.site_admins (
   user_id uuid primary key references auth.users(id) on delete cascade,
@@ -30,7 +40,11 @@ from auth.users u
 join auth.identities i on i.user_id = u.id
 where lower(coalesce(u.email, '')) = lower('thestromer90@gmail.com')
   and i.provider = 'github'
-  and lower(coalesce(i.identity_data->>'user_name', i.identity_data->>'login', '')) = 'ruhioki'
+  and coalesce(
+    nullif(lower(i.identity_data->>'user_name'), ''),
+    nullif(lower(i.identity_data->>'login'), ''),
+    ''
+  ) = 'ruhioki'
 on conflict (user_id) do update set github_username = excluded.github_username;
 
 -- SECURITY DEFINER lets policies check the private allowlist without exposing it.
@@ -76,3 +90,18 @@ values (
   true
 )
 on conflict (id) do nothing;
+
+-- Non-fatal diagnostic: the script can run before the owner has signed in.
+do $$
+begin
+  if not exists (
+    select 1
+    from public.site_admins a
+    join auth.users u on u.id = a.user_id
+    where a.github_username = 'ruhioki'
+      and lower(coalesce(u.email, '')) = lower('thestromer90@gmail.com')
+  ) then
+    raise notice 'Owner not registered yet. Sign in once with the authorized GitHub account, then run this SQL script again.';
+  end if;
+end
+$$;

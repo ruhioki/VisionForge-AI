@@ -1,4 +1,7 @@
--- Run in Supabase Dashboard -> SQL Editor. Never expose a service-role key in the browser.
+-- VisionForge AI shared authentication and owner-only content management.
+-- Run this script in Supabase Dashboard -> SQL Editor after the owner has signed in
+-- with GitHub at least once. Never expose a service-role key in browser code.
+
 create table if not exists public.site_content (
   id text primary key check (id = 'home'),
   label text not null default 'Image Lab · Browser Edition',
@@ -9,22 +12,67 @@ create table if not exists public.site_content (
   updated_at timestamptz not null default now(),
   updated_by uuid references auth.users(id)
 );
+
+-- This table is the actual admin allowlist. Regular users cannot read or modify it.
+create table if not exists public.site_admins (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  github_username text not null check (github_username = 'ruhioki'),
+  created_at timestamptz not null default now()
+);
+alter table public.site_admins enable row level security;
+revoke all on public.site_admins from anon, authenticated;
+
+-- Add only the Supabase account that has the authorized GitHub identity.
+-- If this inserts zero rows, sign in through GitHub once, then rerun this script.
+insert into public.site_admins (user_id, github_username)
+select distinct u.id, 'ruhioki'
+from auth.users u
+join auth.identities i on i.user_id = u.id
+where lower(coalesce(u.email, '')) = lower('thestromer90@gmail.com')
+  and i.provider = 'github'
+  and lower(coalesce(i.identity_data->>'user_name', i.identity_data->>'login', '')) = 'ruhioki'
+on conflict (user_id) do update set github_username = excluded.github_username;
+
+-- SECURITY DEFINER lets policies check the private allowlist without exposing it.
+create or replace function public.is_site_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.site_admins
+    where user_id = auth.uid()
+  );
+$$;
+revoke all on function public.is_site_admin() from public;
+grant execute on function public.is_site_admin() to authenticated;
+
 alter table public.site_content enable row level security;
 drop policy if exists "Public reads published site content" on public.site_content;
 drop policy if exists "Exclusive owner manages site content" on public.site_content;
+drop policy if exists "Authorized admins manage site content" on public.site_content;
+
 create policy "Public reads published site content" on public.site_content
-  for select to anon, authenticated using (published = true);
-create policy "Exclusive owner manages site content" on public.site_content
+  for select to anon, authenticated
+  using (published = true);
+
+create policy "Authorized admins manage site content" on public.site_content
   for all to authenticated
-  using ((auth.jwt() ->> 'email') = 'thestromer90@gmail.com')
-  with check ((auth.jwt() ->> 'email') = 'thestromer90@gmail.com');
+  using (public.is_site_admin())
+  with check (public.is_site_admin());
+
 grant select on public.site_content to anon, authenticated;
 grant insert, update, delete on public.site_content to authenticated;
+
 insert into public.site_content (id, label, tagline, description, footer_text, published)
-values ('home','Image Lab · Browser Edition',
-'Explore classic computer-vision filters on your phone or laptop.',
-'Explore classic computer-vision filters on your device.',
-'VisionForge AI · Open-source learning project',true)
+values (
+  'home',
+  'Image Lab · Browser Edition',
+  'Explore classic computer-vision filters on your phone or laptop.',
+  'Explore classic computer-vision filters on your device.',
+  'VisionForge AI · Open-source learning project',
+  true
+)
 on conflict (id) do nothing;
--- RLS is the security boundary; JWT email is verified by Supabase.
--- The id check constraint allows only the single homepage row.

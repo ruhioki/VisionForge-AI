@@ -62,7 +62,7 @@ function setMode(next) {
   $("email-submit").textContent = mode === "signup" ? "Create account" : "Sign in with email";
   $("password").autocomplete = mode === "signup" ? "new-password" : "current-password";
 }
-let pendingFactorId = null, pendingChallengeId = null, pendingFactorType = null, mfaBusy = false;
+let pendingFactorId = null, pendingChallengeId = null, pendingFactorType = null, mfaBusy = false, challengeInProgress = false, pendingUserId = null;
 async function startMfaChallenge() {
   const {data: factorsData, error: factorsError} = await supabase.auth.mfa.listFactors();
   if (factorsError) throw factorsError;
@@ -82,16 +82,18 @@ async function startMfaChallenge() {
 }
 async function routeUser(user) {
   if (!user) return;
+  if (challengeInProgress && pendingUserId === user.id) return;
   const {data: assurance, error: assuranceError} = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (!assuranceError && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
-    try { await startMfaChallenge(); } catch (error) { setStatus(error.message || "Could not start two-step verification.", "error"); }
+    challengeInProgress = true; pendingUserId = user.id;
+    try { await startMfaChallenge(); } catch (error) { challengeInProgress = false; pendingUserId = null; setStatus(error.message || "Could not start two-step verification.", "error"); }
     return;
   }
   const isAdmin = isOwner(user);
   const next = new URLSearchParams(location.search).get("next");
+  if (next === "security") { location.replace("./security.html"); return; }
   if (isAdmin) { location.replace("./admin.html"); return; }
   if (next === "admin") setStatus("This account is a regular user. Admin access is limited to the authorized owner GitHub account.", "error");
-  else if (next === "security") location.replace("./security.html");
   else location.replace("./index.html");
 }
 $("mfa-verify").addEventListener("click", async () => {
@@ -102,6 +104,7 @@ $("mfa-verify").addEventListener("click", async () => {
   try {
     const {error} = await supabase.auth.mfa.verify({factorId:pendingFactorId,challengeId:pendingChallengeId,code});
     if (error) throw error;
+    challengeInProgress = false; pendingUserId = null;
     const {data} = await supabase.auth.getUser();
     await routeUser(data.user);
   } catch (error) { setStatus(error.message || "Verification failed. Request another code and try again.", "error"); }

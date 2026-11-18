@@ -39,7 +39,8 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v6" in worker
+    assert "visionforge-image-lab-v7" in worker
+    assert '"./civic-scan.html"' in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
@@ -80,3 +81,16 @@ def test_owner_control_center_exposes_only_database_backed_site_controls() -> No
     assert 'id="maintenance-state"' in homepage
     assert 'workspace.hidden = true' in public_content
     assert "create policy \"authorized owner manages site content\"" in schema
+
+
+def test_civic_scan_desk_supports_local_document_workflow() -> None:
+    scanner = (WEB / "civic-scan.html").read_text(encoding="utf-8")
+    homepage = (WEB / "index.html").read_text(encoding="utf-8")
+    for feature in (
+        'id="file"', 'id="camera"', 'id="capture"', 'id="ocr"',
+        'Tesseract.createWorker', 'BarcodeDetector', 'id="text"',
+        'id="download-text"', 'class="checks"', 'Nothing is submitted to a government database',
+        'does not verify whether a document is genuine',
+    ):
+        assert feature in scanner
+    assert 'href="./civic-scan.html"' in homepage

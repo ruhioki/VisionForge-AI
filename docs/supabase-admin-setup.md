@@ -4,11 +4,11 @@ This is a static GitHub Pages site, so it must never contain a private server ke
 
 ## Included
 
-- `web-app/admin.html`: owner-only GitHub OAuth sign-in and homepage text editor.
+- `web-app/admin.html`: owner-only GitHub OAuth sign-in and homepage editor, announcement manager, and maintenance controls.
 - `web-app/site-content.js`: reads published homepage text.
 - `web-app/supabase-config.js`: public configuration placeholders and the owner email.
 - `supabase/owner-dashboard.sql`: content table, seed row, and RLS policies.
-- Exclusive owner: `mo655099@gmail.com`. Database authorization checks the Supabase JWT email; the browser-side check is not the security boundary.
+- Exclusive owner: GitHub account `ruhioki` with the verified email `thestromer90@gmail.com`. Database authorization checks the Supabase JWT email; the browser-side check is not the security boundary.
 
 ## Required external configuration
 
@@ -31,7 +31,7 @@ This is a static GitHub Pages site, so it must never contain a private server ke
 - Only a verified session with JWT email exactly `mo655099@gmail.com` can write/delete content.
 - A table constraint permits only the single homepage row. Keep RLS enabled; do not add broad public write policies.
 - Never put a service-role/secret key in browser code. A publishable key is safe only with the database policies correctly applied.
-- The dashboard edits header label, intro line, SEO description, footer text, and publication toggle. It does not edit Python source code or deploy code changes.
+- The dashboard edits homepage text, publication visibility, a visitor announcement, and a maintenance-mode message. Maintenance mode hides the public image workspace but leaves the owner dashboard available. It does not edit Python source code or deploy code changes.
 - If email confirmation is enabled, verify the owner email before saving.
 
 ## Local test

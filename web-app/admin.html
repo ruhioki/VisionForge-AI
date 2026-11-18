@@ -7,7 +7,7 @@
 </style></head><body><main class="shell">
 <div class="top"><div class="brand">VisionForge <span>AI</span> / Owner</div><a href="./index.html">← Back to Image Lab</a></div>
 <section class="card"><h1>Owner dashboard</h1><p class="muted">Edit public homepage text. Access is restricted to the configured owner account.</p><div id="setup" class="notice">Checking Supabase configuration…</div></section>
-<section id="login-card" class="card hidden"><h2>Secure owner sign-in</h2><p class="muted">We’ll email a passwordless sign-in link to the owner address.</p><label for="email">Owner email</label><input id="email" type="email" autocomplete="email" value="mo655099@gmail.com" readonly><div class="actions"><button id="send-link" class="primary">Email me a sign-in link</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Only the exact owner email can manage content.</p></section>
+<section id="login-card" class="card hidden"><h2>Secure owner sign-in</h2><p class="muted">Sign in with the GitHub account linked to the owner email.</p><div class="actions"><button id="github-login" class="primary">Continue with GitHub</button></div><p id="login-status" class="notice" role="status" aria-live="polite">Only the verified owner email mo655099@gmail.com can manage content.</p></section>
 <section id="editor-card" class="card hidden"><div class="row"><h2>Homepage content</h2><button id="sign-out">Sign out</button></div><p id="signed-in" class="muted small"></p>
 <label for="label">Header label</label><input id="label" maxlength="100">
 <label for="tagline">Intro line</label><textarea id="tagline" maxlength="240"></textarea>
@@ -46,11 +46,13 @@ async function refreshSession() {
   activeUser = user; show("login-card", !user); show("editor-card", !!user);
   if (user) { $("signed-in").textContent = "Signed in as " + user.email; await loadContent(); }
 }
-$("send-link").addEventListener("click", async () => {
-  $("send-link").disabled = true; setNotice("login-status", "Sending sign-in link…");
-  const { error } = await supabase.auth.signInWithOtp({ email: OWNER_EMAIL, options: { emailRedirectTo: new URL("./admin.html", location.href).href } });
-  $("send-link").disabled = false;
-  setNotice("login-status", error ? "Could not send sign-in link: " + error.message : "If the owner account exists and email delivery is configured, a sign-in link will arrive shortly. Check spam too.", error ? "error" : "ok");
+$("github-login").addEventListener("click", async () => {
+  $("github-login").disabled = true; setNotice("login-status", "Redirecting to GitHub…");
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: { redirectTo: new URL("./admin.html", location.href).href, scopes: "read:user user:email" }
+  });
+  if (error) { $("github-login").disabled = false; setNotice("login-status", "Could not start GitHub sign-in: " + error.message + ". Check the Supabase GitHub provider setup.", "error"); }
 });
 $("save").addEventListener("click", async () => {
   if (!checkOwner(activeUser)) { setNotice("editor-status", "Owner sign-in required.", "error"); return; }

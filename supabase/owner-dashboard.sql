@@ -16,8 +16,8 @@ create policy "Public reads published site content" on public.site_content
   for select to anon, authenticated using (published = true);
 create policy "Exclusive owner manages site content" on public.site_content
   for all to authenticated
-  using ((auth.jwt() ->> 'email') = 'mo655099@gmail.com')
-  with check ((auth.jwt() ->> 'email') = 'mo655099@gmail.com');
+  using ((auth.jwt() ->> 'email') = 'thestromer90@gmail.com')
+  with check ((auth.jwt() ->> 'email') = 'thestromer90@gmail.com');
 grant select on public.site_content to anon, authenticated;
 grant insert, update, delete on public.site_content to authenticated;
 insert into public.site_content (id, label, tagline, description, footer_text, published)

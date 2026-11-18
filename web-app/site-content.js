@@ -13,14 +13,16 @@ if (SUPABASE_URL.startsWith("https://") && SUPABASE_PUBLISHABLE_KEY.length > 20)
     });
     const { data, error } = await supabase.from("site_content")
       .select("label,tagline,description,footer_text,published,announcement_text,announcement_enabled,maintenance_mode,maintenance_message")
-      .eq("id", "home").eq("published", true).maybeSingle();
+      .eq("id", "home").maybeSingle();
     if (error) throw error;
     if (data) {
-      setText("#site-label", data.label);
-      setText("#site-tagline", data.tagline);
-      setText("#site-footer-text", data.footer_text);
-      const description = document.querySelector('meta[name="description"]');
-      if (description && data.description) description.setAttribute("content", data.description);
+      if (data.published) {
+        setText("#site-label", data.label);
+        setText("#site-tagline", data.tagline);
+        setText("#site-footer-text", data.footer_text);
+        const description = document.querySelector('meta[name="description"]');
+        if (description && data.description) description.setAttribute("content", data.description);
+      }
 
       const announcement = document.getElementById("site-announcement");
       if (announcement && data.announcement_enabled && data.announcement_text) {

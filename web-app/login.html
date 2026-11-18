@@ -96,7 +96,8 @@ $("email-form").addEventListener("submit", async event => {
 $("github-login").addEventListener("click", async () => {
   if (busy) return; busy = true; $("github-login").disabled = true; setStatus("Opening GitHub securely…");
   try {
-    const redirectTo = new URL("./login.html?next=admin", location.href).href;
+    const next = new URLSearchParams(location.search).get("next");
+    const redirectTo = new URL(next === "admin" ? "./login.html?next=admin" : "./login.html", location.href).href;
     const {error} = await supabase.auth.signInWithOAuth({provider:"github",options:{redirectTo,scopes:"read:user user:email"}});
     if (error) throw error;
   } catch(error) { setStatus(error.message || "Could not start GitHub sign-in. Check the Supabase GitHub provider settings.", "error"); busy = false; $("github-login").disabled = false; }

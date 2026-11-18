@@ -39,7 +39,7 @@ def test_service_worker_precaches_the_app_shell() -> None:
     for asset in ('"./"', '"./index.html"', '"./admin.html"', '"./site-content.js"',
                   '"./supabase-config.js"', '"./manifest.webmanifest"', '"./icon.svg"'):
         assert asset in worker
-    assert "visionforge-image-lab-v6" in worker
+    assert "visionforge-image-lab-v7" in worker
 
 
 def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
@@ -48,6 +48,10 @@ def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
     config = (WEB / "supabase-config.js").read_text(encoding="utf-8")
     schema = (ROOT / "supabase" / "owner-dashboard.sql").read_text(encoding="utf-8").lower()
     assert "signInWithPassword" in login
+    assert "resetPasswordForEmail" in login
+    assert "updateUser({ password })" in login
+    assert "password-toggle" in login
+    assert 'href="./icon.svg"' in login
     assert "signUp" in login
     assert "signInWithOAuth" in login
     assert 'provider:"github"' in login

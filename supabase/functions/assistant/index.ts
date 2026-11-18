@@ -7,7 +7,8 @@ Deno.serve(async(req:Request)=>{
  if(req.method==="OPTIONS"){const headers={...corsHeaders};if(origin)headers["Access-Control-Allow-Origin"]=origin;return new Response("ok",{headers})}
  if(req.method!=="POST")return reply({error:"Use POST."},405,origin);
  const token=(req.headers.get("authorization")||"").match(/^Bearer\s+(.+)$/i)?.[1];
- let projectKeys:Record<string,string>={};try{projectKeys=JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")||"{}")}catch{}\n const url=Deno.env.get("SUPABASE_URL"),pub=Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||projectKeys.default,key=Deno.env.get("OPENAI_API_KEY");
+ let projectKeys:Record<string,string>={};try{projectKeys=JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")||"{}")}catch{}
+ const url=Deno.env.get("SUPABASE_URL"),pub=Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||projectKeys.default,key=Deno.env.get("OPENAI_API_KEY");
  if(!url||!pub)return reply({error:"Server authentication configuration is missing."},503,origin);
  if(!token)return reply({error:"Sign in to use the assistant."},401,origin);
  const auth=await fetch(url+"/auth/v1/user",{headers:{apikey:pub,Authorization:"Bearer "+token}});
@@ -32,5 +33,5 @@ Deno.serve(async(req:Request)=>{
  if(!response.ok)return reply({error:response.status===429?"AI usage limit reached. Try again later.":"AI service returned an error. Check server configuration and usage limits."},response.status===429?429:502,origin);
  const texts:string[]=[],sources:{title:string;url:string}[]=[];
  for(const item of result.output||[]){if(item.type!=="message")continue;for(const part of item.content||[]){if(part.type==="output_text"&&typeof part.text==="string")texts.push(part.text);for(const a of part.annotations||[]){if(a.type==="url_citation"&&typeof a.url==="string"&&/^https:\/\//.test(a.url)&&!sources.some(s=>s.url===a.url))sources.push({title:a.title||a.url,url:a.url})}}}
- return reply({answer:texts.join("\n\n")||"No text answer returned. Please try again.",sources,webSearchUsed:mode==="research"});
+ return reply({answer:texts.join("\n\n")||"No text answer returned. Please try again.",sources,webSearchUsed:mode==="research"},200,origin);
 });

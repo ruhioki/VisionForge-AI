@@ -135,7 +135,7 @@ def test_assistant_edge_function_authenticates_and_keeps_ai_key_server_side() ->
     docs = (ROOT / "docs" / "assistant-setup.md").read_text(encoding="utf-8")
     assert 'Deno.env.get("OPENAI_API_KEY")' in function
     assert '"/auth/v1/user"' in function
-    assert 'type: "web_search"' in function
+    assert 'type:"web_search"' in function
     assert "store:false" in function
     assert "supabase functions deploy assistant" in docs
     assert "never put it in" in docs

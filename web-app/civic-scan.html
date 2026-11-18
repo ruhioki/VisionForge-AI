@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b14"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+<meta name="description" content="CivicScan Desk helps organize public-service paperwork with local OCR, QR/barcode reading, and a completeness checklist.">
+<title>VisionForge AI · CivicScan Desk</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0b14;--panel:#141421;--line:#29283d;--text:#f4f2ff;--muted:#a6a3bd;--purple:#a78bfa;--green:#a3e635}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#21183a 0,#0b0b14 55%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;padding:18px 12px}.shell{max-width:1080px;margin:auto}header,.bar,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header{margin:0 0 20px}.brand{display:flex;align-items:center;gap:10px;font-weight:800}.brand img{width:42px;height:42px;border-radius:12px}.brand span{color:var(--purple)}a{color:#c4b5fd}.intro{color:var(--muted);max-width:760px}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.85fr);gap:14px}.card{background:rgba(20,20,33,.96);border:1px solid var(--line);border-radius:17px;padding:18px;min-width:0;margin-bottom:14px}h1{font-size:clamp(1.5rem,4vw,2.2rem);margin:0 0 6px}h2{font-size:1.05rem;margin:0 0 12px}p{margin-top:8px}.muted,small{color:var(--muted)}button,.button{border:1px solid #3a3550;border-radius:10px;background:#201d32;color:var(--text);padding:10px 13px;min-height:42px;font:inherit;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}button.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:0;font-weight:750}button:disabled{opacity:.45;cursor:not-allowed}input[type=file]{width:100%;padding:10px;background:#0e0d19;border:1px dashed #51466f;border-radius:10px}label{display:block;font-weight:650;margin:12px 0 6px}textarea,input[type=text]{width:100%;background:#0e0d19;border:1px solid #38334e;color:var(--text);border-radius:10px;padding:11px;font:inherit}textarea{min-height:250px;resize:vertical}.preview{width:100%;max-height:440px;object-fit:contain;background:#080810;border-radius:10px;margin-top:12px}.status{border:1px solid var(--line);background:#0d0d17;border-radius:10px;padding:10px;color:var(--muted);overflow-wrap:anywhere;margin-top:10px}.privacy{border-color:#365314;color:#d9f99d}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.checks{display:grid;gap:9px}.checks label{display:flex;gap:9px;align-items:flex-start;margin:0;font-weight:500}.checks input{margin-top:5px;accent-color:var(--purple)}.meter{height:8px;background:#29283d;border-radius:8px;overflow:hidden;margin-top:8px}.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8b5cf6,#a3e635)}footer{color:var(--muted);font-size:.84rem;padding:10px 0}@media(max-width:760px){.layout{grid-template-columns:1fr}.card{padding:14px}body{padding:12px 9px}}
+</style>
+</head>
+<body><main class="shell">
+<header><div class="brand"><img src="./icon.svg" alt="VisionForge AI"><div>VisionForge <span>AI</span> · CivicScan Desk</div></div><nav><a href="./index.html">Image Lab</a> · <a href="./login.html">Sign in</a></nav></header>
+<section class="intro"><h1>Scan paperwork. Spend less time retyping.</h1><p>CivicScan Desk is a prototype for public-service counters and community organizations. Turn a clear document photo into editable text, read supported QR/barcodes, and use a checklist to catch missing items before a human review.</p></section>
+<div class="layout">
+<section class="card"><h2>1. Capture or choose a document</h2>
+<label for="file">Document photo</label><input id="file" type="file" accept="image/*" capture="environment">
+<div class="actions"><button id="camera" type="button">Use camera</button><button id="stop-camera" type="button" disabled>Stop camera</button><button id="enhance" type="button" disabled>Improve readability</button></div>
+<video id="video" class="preview" autoplay playsinline hidden></video><canvas id="canvas" class="preview" hidden></canvas><img id="preview" class="preview" alt="Selected document preview" hidden>
+<div class="actions"><button id="capture" class="primary" type="button" disabled>Capture photo</button><button id="ocr" class="primary" type="button" disabled>Extract text (OCR)</button><button id="download-image" type="button" disabled>Download scan</button></div>
+<div id="status" class="status" role="status" aria-live="polite">Choose a document photo or open the camera. The document is processed in this browser.</div>
+<div class="status privacy">Privacy: image processing and OCR run on your device. Do not use this demo for highly sensitive records on shared devices. Nothing is submitted to a government database.</div>
+</section>
+<aside>
+<section class="card"><h2>2. Extracted text</h2><p class="muted">Review and correct OCR results before copying them into an official system.</p><textarea id="text" placeholder="Extracted text will appear here. You can edit it manually."></textarea>
+<div class="actions"><button id="copy" type="button">Copy text</button><button id="download-text" type="button">Download .txt</button><button id="clear" type="button">Clear</button></div>
+<label for="barcode">QR / barcode result</label><input id="barcode" type="text" readonly placeholder="No code detected yet">
+<p class="muted"><small>QR/barcode reading depends on browser support and whether a code is visible in the photo. This does not verify whether a document is genuine.</small></p>
+</section>
+<section class="card"><h2>3. Application completeness checklist</h2><p class="muted">Use this checklist as a reminder only. Requirements differ by service and location.</p>
+<div class="checks"><label><input type="checkbox"> Required application form is present</label><label><input type="checkbox"> Applicant name is filled in</label><label><input type="checkbox"> Date and signature are present, if required</label><label><input type="checkbox"> Required supporting documents are attached</label><label><input type="checkbox"> Contact details are provided, if required</label></div>
+<div class="row"><span id="progress-label" class="muted">0 of 5 checked</span><strong id="progress-percent">0%</strong></div><div class="meter"><span id="progress"></span></div>
+<div class="status">The checklist does not determine eligibility, authenticate documents, or replace an authorized officer's review.</div>
+</section>
+</aside></div>
+<footer>VisionForge AI · CivicScan Desk prototype · <a href="https://github.com/ruhioki/VisionForge-AI">Open-source project</a></footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);let image=null,stream=null,worker=null,barcodeDetector=null;
+function status(message){$('status').textContent=message}
+function setImage(src){image=src;$('preview').src=src;$('preview').hidden=false;$('canvas').hidden=true;$('ocr').disabled=false;$('enhance').disabled=false;$('download-image').disabled=false;status('Image ready. Improve readability if needed, then extract text.')}
+function loadFile(file){if(!file)return;if(!file.type.startsWith('image/')){status('Choose an image file.');return}if(file.size>15*1024*1024){status('Choose an image smaller than 15 MB.');return}const reader=new FileReader();reader.onload=()=>setImage(reader.result);reader.onerror=()=>status('Could not read that image. Try another file.');reader.readAsDataURL(file)}
+$('file').addEventListener('change',e=>loadFile(e.target.files[0]));
+$('camera').addEventListener('click',async()=>{try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera access is not available in this browser. Use the file picker instead.');stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});$('video').srcObject=stream;$('video').hidden=false;$('stop-camera').disabled=false;$('capture').disabled=false;status('Camera is on. Hold the document steady and tap Capture photo.')}catch(e){status(e.message||'Could not open the camera. Check browser permission or use a photo.') }});
+function stopCamera(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('video').hidden=true;$('stop-camera').disabled=true;$('capture').disabled=true}
+$('stop-camera').addEventListener('click',stopCamera);
+$('capture').addEventListener('click',()=>{const v=$('video');if(!v.videoWidth){status('Wait for the camera preview to load.');return}const c=$('canvas');const scale=Math.min(1,2000/Math.max(v.videoWidth,v.videoHeight));c.width=Math.round(v.videoWidth*scale);c.height=Math.round(v.videoHeight*scale);c.getContext('2d').drawImage(v,0,0,c.width,c.height);setImage(c.toDataURL('image/jpeg',.92));stopCamera()});
+$('enhance').addEventListener('click',()=>{if(!image)return;const im=new Image();im.onload=()=>{const c=$('canvas');const scale=Math.min(1,2000/Math.max(im.width,im.height));c.width=Math.max(1,Math.round(im.width*scale));c.height=Math.max(1,Math.round(im.height*scale));const x=c.getContext('2d');x.filter='grayscale(1) contrast(1.25)';x.drawImage(im,0,0,c.width,c.height);image=c.toDataURL('image/png');$('preview').src=image;status('Readability adjustment applied. This may help OCR, but always compare the result with the original.');};im.src=image});
+$('ocr').addEventListener('click',async()=>{if(!image)return;if(!window.Tesseract){status('OCR library did not load. Check your internet connection and reload this page.');return}const button=$('ocr');button.disabled=true;try{status('Starting on-device OCR. Large images may take a little time.');worker=worker||await Tesseract.createWorker('eng');const result=await worker.recognize(image);$('text').value=(result.data.text||'').trim();status('OCR finished. Review spelling, numbers and names against the original document.');await detectBarcode()}catch(e){status('OCR could not finish: '+(e.message||'unknown error'))}finally{button.disabled=false}});
+async function detectBarcode(){try{if(!('BarcodeDetector'in window)){ $('barcode').value='This browser does not support built-in QR/barcode reading.';return}barcodeDetector=barcodeDetector||new BarcodeDetector({formats:['qr_code','code_128','code_39','ean_13','ean_8','upc_a','upc_e','pdf417','data_matrix']});const img=$('preview');const codes=await barcodeDetector.detect(img);$('barcode').value=codes.length?codes.map(c=>c.format+': '+c.rawValue).join('\n'):'No supported QR/barcode detected in this image.'}catch(e){$('barcode').value='Could not read a supported code in this browser.'}}
+$('download-image').addEventListener('click',()=>{if(!image)return;const a=document.createElement('a');a.href=image;a.download='civicscan-document.png';a.click()});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('text').value);status('Extracted text copied.')}catch(e){$('text').focus();$('text').select();status('Select the text and copy it using your device menu.') }});
+$('download-text').addEventListener('click',()=>{const blob=new Blob([$('text').value],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='civicscan-extracted-text.txt';a.click();URL.revokeObjectURL(url)});
+$('clear').addEventListener('click',()=>{$('text').value='';$('barcode').value='';status('Extracted text cleared. Your original file is not changed.')});
+document.querySelectorAll('.checks input').forEach(c=>c.addEventListener('change',()=>{const all=[...document.querySelectorAll('.checks input')],n=all.filter(x=>x.checked).length;$('progress-label').textContent=n+' of '+all.length+' checked';$('progress-percent').textContent=Math.round(n/all.length*100)+'%';$('progress').style.width=(n/all.length*100)+'%'}));
+window.addEventListener('pagehide',()=>{stopCamera();if(worker)worker.terminate()});
+})();
+</script>
+</body></html>

@@ -110,7 +110,7 @@ def test_phone_mfa_has_enrollment_and_login_challenge() -> None:
     assert 'auth.mfa.verify({factorId:pendingFactorId,challengeId:pendingChallengeId,code})' in login
     assert 'href="./security.html"' in homepage
     assert '"./security.html"' in worker
-    assert "visionforge-image-lab-v8" in worker
+    assert "visionforge-image-lab-v9" in worker
 
 
 def test_assistant_page_has_accessible_ai_and_local_developer_tools() -> None:

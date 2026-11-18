@@ -40,6 +40,10 @@ VisionForge AI is a learning-focused computer-vision project. Its first working 
 Classical image processing works with the base install. An optional ONNX Runtime classifier can run a compatible model you provide; model weights and label files are not bundled.
 
 
+## Owner dashboard
+
+A Supabase-backed owner dashboard is included for editing homepage text. It uses passwordless email sign-in and database-side Row Level Security; only the verified owner email configured in the SQL policy can write. Setup instructions and the required external configuration are in [docs/supabase-admin-setup.md](docs/supabase-admin-setup.md). The dashboard is at `web-app/admin.html` after Pages deploys.
+
 ## Mobile browser app
 
 A lightweight browser-based companion is available in `web-app/`. It performs grayscale conversion, Sobel-gradient edge detection, blur, sharpening, thresholding, histogram display, quick presets, image-size details, processing-time feedback, and separate original/result PNG downloads directly in your browser. It does not upload selected images.

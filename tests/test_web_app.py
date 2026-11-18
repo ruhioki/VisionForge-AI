@@ -42,16 +42,21 @@ def test_service_worker_precaches_the_app_shell() -> None:
     assert "visionforge-image-lab-v3" in worker
 
 
-def test_owner_dashboard_is_configured_for_secure_supabase_auth() -> None:
+def test_shared_login_supports_regular_accounts_and_github_owner() -> None:
+    login = (WEB / "login.html").read_text(encoding="utf-8")
     admin = (WEB / "admin.html").read_text(encoding="utf-8")
     config = (WEB / "supabase-config.js").read_text(encoding="utf-8")
     schema = (ROOT / "supabase" / "owner-dashboard.sql").read_text(encoding="utf-8").lower()
-    assert "signInWithOAuth" in admin
-    assert 'provider: "github"' in admin
-    assert "github-login" in admin
-    assert "mo655099@gmail.com" in config
+    assert "signInWithPassword" in login
+    assert "signUp" in login
+    assert "signInWithOAuth" in login
+    assert 'provider:"github"' in login
+    assert "OWNER_GITHUB_USERNAME" in admin
+    assert "login.html?next=admin" in admin
+    assert 'OWNER_EMAIL = "thestromer90@gmail.com"' in config
+    assert 'OWNER_GITHUB_USERNAME = "ruhioki"' in config
     assert "service-role" in admin.lower()
     assert "enable row level security" in schema
-    assert "auth.jwt()" in schema
-    assert "mo655099@gmail.com" in schema
+    assert "site_admins" in schema
+    assert "is_site_admin()" in schema
     assert "using (published = true)" in schema
